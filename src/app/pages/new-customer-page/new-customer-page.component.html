@@ -1,0 +1,109 @@
+<div class="modal-body">
+    <div class="type-toggle">
+        <div class="toggle-slider" [class.slide-right]="selectedType() === 'company'"></div>
+        <div class="type-option" [class.active]="selectedType() === 'personal'" (click)="selectedType.set('personal')">
+            Personal</div>
+        <div class="type-option" [class.active]="selectedType() === 'company'" (click)="selectedType.set('company')">
+            Company</div>
+    </div>
+    <div id="customerForm">
+        <div class="form-section" style="margin-bottom: 24px;">
+            <div class="input-group">
+                <label>Project Name</label>
+                <input type="text">
+            </div>
+        </div>
+
+        <!-- Section: Contacts -->
+        <div class="form-section">
+            <span class="form-section-title">Primary Contact</span>
+            <div class="grid">
+                <div class="input-group">
+                    <label>Name</label>
+                    <input type="text">
+                </div>
+                <div class="input-group">
+                    <label>Surname</label>
+                    <input type="text">
+                </div>
+                <div class="input-group">
+                    <label>Phone Number</label>
+                    <input type="tel">
+                </div>
+                <div class="input-group">
+                    <label>Email Address</label>
+                    <input type="email">
+                </div>
+            </div>
+            <!-- <button type="button" class="add-contact-btn">+ Add Secondary Contact</button> -->
+        </div>
+
+        <!-- Section: Location & Details -->
+        <div class="form-section">
+            <span class="form-section-title">Location & Classification</span>
+            <div class="grid">
+                <div class="input-group full-width">
+                    <label>Project Location</label>
+                    <div class="tag-select-group">
+                        <div class="tag-pill selected">Pattaya</div>
+                        <div class="tag-pill">Huahin</div>
+                        <div class="tag-pill">Bangkok</div>
+                        <div class="tag-pill">Up Country</div>
+                    </div>
+                </div>
+                <div class="input-group full-width">
+                    <label>Type of Customer</label>
+                    <div class="tag-select-group">
+                        <div class="tag-pill selected">Residential</div>
+                        <div class="tag-pill">Commercial</div>
+                        <div class="tag-pill">Upgrade</div>
+                    </div>
+                </div>
+                <div class="input-group full-width">
+                    <label>Type of System</label>
+                    <div class="tag-select-group">
+                        <div class="tag-pill">On-Grid</div>
+                        <div class="tag-pill">Off-Grid</div>
+                        <div class="tag-pill selected">Hybrid</div>
+                    </div>
+                </div>
+                <div class="input-group full-width">
+                    <label>Initial Status</label>
+                    <p-select [options]="statusList" class="status-select" [(ngModel)]="statusSelected"
+                        optionLabel="label" optionValue="label" placeholder="Select a status">
+                    </p-select>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section: Site Information -->
+        <div class="form-section">
+            <span class="form-section-title">Site Address</span>
+            <div class="grid">
+                <div class="input-group full-width">
+                    <label>Full Address</label>
+                    <input type="text">
+                </div>
+                <div class="input-group full-width">
+                    <label>Google Maps Link</label>
+                    <input type="url">
+                </div>
+            </div>
+        </div>
+
+        <!-- Section: Initial Notes -->
+        <div class="form-section">
+            <span class="form-section-title">Initial Notes</span>
+            <div class="input-group full-width">
+                <label>Internal Note</label>
+                <textarea style="min-height: 100px; resize: vertical;"></textarea>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="modal-footer">
+    <button class="btn btn-cancel" type="button" (click)="onCancel()">Discard</button>
+    <button class="btn btn-save" type="button" (click)="onSave()">Create Profile</button>
+</div>

@@ -6,10 +6,14 @@
 /out-tsc
 /bazel-out
 
+TASKS.md
+KUNINI_Brand_Style_Guide_2025.md
+/coverage
 # Node
 /node_modules
 npm-debug.log
 yarn-error.log
+*.log
 
 # IDEs and editors
 .idea/
@@ -18,7 +22,11 @@ yarn-error.log
 .c9/
 *.launch
 .settings/
+.claude
 *.sublime-workspace
+.env
+.env.*
+!.env.example
 
 # Visual Studio Code
 .vscode/*

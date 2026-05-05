@@ -2,6 +2,8 @@ import { BootstrapContext, bootstrapApplication } from '@angular/platform-browse
 import { AppComponent } from './app/app.component';
 import { config } from './app/app.config.server';
 
+export { ɵgetOrCreateAngularServerApp } from '@angular/ssr';
+
 const bootstrap = (context: BootstrapContext) =>
     bootstrapApplication(AppComponent, config, context);
 

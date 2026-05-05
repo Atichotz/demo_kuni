@@ -1,0 +1,88 @@
+.nav-bar {
+  display: flex;
+  align-items: stretch;
+  justify-content: space-between;
+  background-color: #fff;
+  border-bottom: 1px solid #e2e8f0;
+  padding: 0 1.5rem;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+}
+
+.nav-main {
+  display: flex;
+  align-items: stretch;
+}
+
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.2rem;
+  padding: 0.6rem 0.85rem;
+  font-size: 0.75rem;
+  color: #64748b;
+  border-bottom: 3px solid transparent;
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s;
+  white-space: nowrap;
+
+  .pi {
+    font-size: 1.1rem;
+  }
+
+  span {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+  }
+
+  &:hover {
+    color: #1e2d4e;
+  }
+
+  &.active {
+    color: #f97316;
+    border-bottom-color: #f97316;
+    font-weight: 600;
+
+    .pi {
+      color: #f97316;
+    }
+  }
+}
+
+.dashboard-item {
+  flex-direction: row;
+  gap: 0.4rem;
+
+  .pi {
+    font-size: 0.95rem;
+  }
+}
+
+.new-badge {
+  background-color: #f97316;
+  color: #fff;
+  font-size: 0.6rem;
+  font-weight: 700;
+  padding: 0.1rem 0.35rem;
+  border-radius: 999px;
+  letter-spacing: 0.02em;
+}
+
+:host ::ng-deep .p-button {
+  border-color: #f97316;
+  color: #f97316;
+  font-size: 0.8rem;
+
+  &:hover {
+    background-color: #fff7ed;
+  }
+}

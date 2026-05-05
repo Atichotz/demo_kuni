@@ -1,0 +1,482 @@
+<div class="max-w-[780px] mx-auto px-4 py-5">
+
+  <!-- ── Page Header ── -->
+  <div class="page-header">
+    <h1>⚡ Solar Mini Calculators</h1>
+    <p>Quick electrical engineering tools for solar system design and sizing</p>
+  </div>
+
+  <!-- ── Calculator Grid ── -->
+  <div class="calc-grid">
+
+    <!-- ── 1. Power Duration ── -->
+    <div class="calc-card">
+      <div class="calc-card-header">
+        <div class="calc-icon">🔋</div>
+        <div>
+          <h3 class="calc-title">Power Duration</h3>
+          <p class="calc-desc">How long can your battery power a load?</p>
+        </div>
+      </div>
+      <div class="calc-body">
+        <div class="field-row">
+          <label class="field-label">SYSTEM VOLTAGE</label>
+          <select class="native-select" [ngModel]="c1Voltage()" (ngModelChange)="c1Voltage.set($event)">
+            @for (v of dcVoltages; track v.value) {
+              <option [value]="v.value">{{ v.label }}</option>
+            }
+          </select>
+        </div>
+        <div class="field-row">
+          <label class="field-label">BATTERY CAPACITY (Ah)</label>
+          <input type="number" class="field-input" placeholder="e.g. 200"
+            [ngModel]="c1BattCap()" (ngModelChange)="c1BattCap.set($event)" />
+        </div>
+        <div class="field-row">
+          <label class="field-label">TOTAL LOAD (Watts)</label>
+          <input type="number" class="field-input" placeholder="e.g. 500"
+            [ngModel]="c1Load()" (ngModelChange)="c1Load.set($event)" />
+        </div>
+        <div class="result-box" [class.result-ready]="c1Result() !== null">
+          @if (c1Result() !== null) {
+            <div class="result-label">Estimated Runtime</div>
+            <div class="result-value">{{ c1Result() | number:'1.1-1' }} <span class="result-unit">hours</span></div>
+            <div class="result-note">Based on 80% Depth of Discharge (DoD)</div>
+          } @else {
+            <span class="result-empty">Enter values to see result</span>
+          }
+        </div>
+      </div>
+    </div>
+
+    <!-- ── 2. Battery Required ── -->
+    <div class="calc-card">
+      <div class="calc-card-header">
+        <div class="calc-icon">🔌</div>
+        <div>
+          <h3 class="calc-title">Battery Required</h3>
+          <p class="calc-desc">How many Ah do you need for backup?</p>
+        </div>
+      </div>
+      <div class="calc-body">
+        <div class="field-row">
+          <label class="field-label">SYSTEM VOLTAGE</label>
+          <select class="native-select" [ngModel]="c2Voltage()" (ngModelChange)="c2Voltage.set($event)">
+            @for (v of dcVoltages; track v.value) {
+              <option [value]="v.value">{{ v.label }}</option>
+            }
+          </select>
+        </div>
+        <div class="field-row">
+          <label class="field-label">TOTAL LOAD (Watts)</label>
+          <input type="number" class="field-input" placeholder="e.g. 1000"
+            [ngModel]="c2Load()" (ngModelChange)="c2Load.set($event)" />
+        </div>
+        <div class="field-row">
+          <label class="field-label">DESIRED BACKUP HOURS</label>
+          <input type="number" class="field-input" placeholder="e.g. 8"
+            [ngModel]="c2Hours()" (ngModelChange)="c2Hours.set($event)" />
+        </div>
+        <div class="result-box" [class.result-ready]="c2Result() !== null">
+          @if (c2Result() !== null) {
+            <div class="result-label">Battery Capacity Needed</div>
+            <div class="result-value">{{ c2Result() | number:'1.0-0' }} <span class="result-unit">Ah</span></div>
+            <div class="result-note">Based on 80% DoD — round up to nearest standard size</div>
+          } @else {
+            <span class="result-empty">Enter values to see result</span>
+          }
+        </div>
+      </div>
+    </div>
+
+    <!-- ── 3. Solar Panels Required ── -->
+    <div class="calc-card">
+      <div class="calc-card-header">
+        <div class="calc-icon">☀️</div>
+        <div>
+          <h3 class="calc-title">Solar Panels Required</h3>
+          <p class="calc-desc">Panels needed to fully charge your battery bank</p>
+        </div>
+      </div>
+      <div class="calc-body">
+        <div class="field-row">
+          <label class="field-label">SYSTEM VOLTAGE</label>
+          <select class="native-select" [ngModel]="c3Voltage()" (ngModelChange)="c3Voltage.set($event)">
+            @for (v of dcVoltages; track v.value) {
+              <option [value]="v.value">{{ v.label }}</option>
+            }
+          </select>
+        </div>
+        <div class="field-row">
+          <label class="field-label">SUNSHINE CONDITION</label>
+          <select class="native-select" [ngModel]="c3Sunshine()" (ngModelChange)="c3Sunshine.set($event)">
+            @for (s of sunshineOpts; track s.value) {
+              <option [value]="s.value">{{ s.label }}</option>
+            }
+          </select>
+        </div>
+        <div class="field-row">
+          <label class="field-label">BATTERY CAPACITY (Ah)</label>
+          <input type="number" class="field-input" placeholder="e.g. 200"
+            [ngModel]="c3BattCap()" (ngModelChange)="c3BattCap.set($event)" />
+        </div>
+        <div class="result-box" [class.result-ready]="c3Result() !== null">
+          @if (c3Result() !== null) {
+            <div class="result-label">Solar Panels Required</div>
+            <div class="result-value">{{ c3Result() }} <span class="result-unit">× 550W panels</span></div>
+            <div class="result-note">Accounting for 85% system efficiency</div>
+          } @else {
+            <span class="result-empty">Enter values to see result</span>
+          }
+        </div>
+      </div>
+    </div>
+
+    <!-- ── 4. Battery Charge Time ── -->
+    <div class="calc-card">
+      <div class="calc-card-header">
+        <div class="calc-icon">⏱️</div>
+        <div>
+          <h3 class="calc-title">Battery Charge Time</h3>
+          <p class="calc-desc">How long to fully charge from current state?</p>
+        </div>
+      </div>
+      <div class="calc-body">
+        <div class="field-row">
+          <label class="field-label">BATTERY CAPACITY (Ah)</label>
+          <input type="number" class="field-input" placeholder="e.g. 200"
+            [ngModel]="c4BattCap()" (ngModelChange)="c4BattCap.set($event)" />
+        </div>
+        <div class="field-row">
+          <label class="field-label">CHARGING CURRENT / SCC (Amps)</label>
+          <input type="number" class="field-input" placeholder="e.g. 40"
+            [ngModel]="c4ChargeCurrent()" (ngModelChange)="c4ChargeCurrent.set($event)" />
+        </div>
+        <div class="field-row">
+          <label class="field-label">CURRENT STATE OF CHARGE (%)</label>
+          <input type="number" class="field-input" placeholder="e.g. 20" min="0" max="100"
+            [ngModel]="c4Soc()" (ngModelChange)="c4Soc.set($event)" />
+        </div>
+        <div class="result-box" [class.result-ready]="c4Result() !== null">
+          @if (c4Result() !== null) {
+            <div class="result-label">Estimated Charge Time</div>
+            <div class="result-value">{{ c4Result() | number:'1.1-1' }} <span class="result-unit">hours</span></div>
+            <div class="result-note">To reach 100% — actual time varies with charging profile</div>
+          } @else {
+            <span class="result-empty">Enter values to see result</span>
+          }
+        </div>
+      </div>
+    </div>
+
+    <!-- ── 5. Breaker Sizing ── -->
+    <div class="calc-card">
+      <div class="calc-card-header">
+        <div class="calc-icon">🔧</div>
+        <div>
+          <h3 class="calc-title">Breaker Sizing</h3>
+          <p class="calc-desc">Select the correct circuit breaker ampere rating</p>
+        </div>
+      </div>
+      <div class="calc-body">
+        <div class="field-row">
+          <label class="field-label">PHASE TYPE</label>
+          <select class="native-select" [ngModel]="c5Phase()" (ngModelChange)="c5Phase.set($event)">
+            <option value="single">Single Phase</option>
+            <option value="three">Three Phase</option>
+          </select>
+        </div>
+        <div class="field-row">
+          <label class="field-label">SYSTEM VOLTAGE</label>
+          <select class="native-select" [ngModel]="c5Voltage()" (ngModelChange)="c5Voltage.set($event)">
+            @for (v of acVoltages; track v.value) {
+              <option [value]="v.value">{{ v.label }}</option>
+            }
+          </select>
+        </div>
+        <div class="field-row">
+          <label class="field-label">TOTAL LOAD (Watts)</label>
+          <input type="number" class="field-input" placeholder="e.g. 3000"
+            [ngModel]="c5Load()" (ngModelChange)="c5Load.set($event)" />
+        </div>
+        <div class="result-box" [class.result-ready]="c5Result() !== null">
+          @if (c5Result(); as r) {
+            <div class="result-label">Recommended Breaker</div>
+            <div class="result-value">{{ r.size }}A <span class="result-unit">breaker</span></div>
+            <div class="result-note">Running current: {{ r.current | number:'1.1-1' }}A — design: {{ r.design | number:'1.1-1' }}A (×1.25)</div>
+          } @else {
+            <span class="result-empty">Enter values to see result</span>
+          }
+        </div>
+      </div>
+    </div>
+
+    <!-- ── 6. String Sizing ── -->
+    <div class="calc-card">
+      <div class="calc-card-header">
+        <div class="calc-icon">🔆</div>
+        <div>
+          <h3 class="calc-title">PV String Sizing</h3>
+          <p class="calc-desc">Min and max panels per string for your inverter</p>
+        </div>
+      </div>
+      <div class="calc-body">
+        <div class="field-grid-2">
+          <div class="field-row">
+            <label class="field-label">PANEL VOC (V)</label>
+            <input type="number" class="field-input" placeholder="e.g. 49.5"
+              [ngModel]="c6PanelVoc()" (ngModelChange)="c6PanelVoc.set($event)" />
+          </div>
+          <div class="field-row">
+            <label class="field-label">PANEL VMP (V)</label>
+            <input type="number" class="field-input" placeholder="e.g. 41.2"
+              [ngModel]="c6PanelVmp()" (ngModelChange)="c6PanelVmp.set($event)" />
+          </div>
+          <div class="field-row">
+            <label class="field-label">VOC TEMP COEFF (%/°C)</label>
+            <input type="number" class="field-input" placeholder="-0.29" step="0.01"
+              [ngModel]="c6TempCoeff()" (ngModelChange)="c6TempCoeff.set($event)" />
+          </div>
+          <div class="field-row">
+            <label class="field-label">INV MAX INPUT (V)</label>
+            <input type="number" class="field-input" placeholder="e.g. 500"
+              [ngModel]="c6InvMaxV()" (ngModelChange)="c6InvMaxV.set($event)" />
+          </div>
+          <div class="field-row">
+            <label class="field-label">INV MIN INPUT (V)</label>
+            <input type="number" class="field-input" placeholder="e.g. 100"
+              [ngModel]="c6InvMinV()" (ngModelChange)="c6InvMinV.set($event)" />
+          </div>
+          <div class="field-row">
+            <label class="field-label">MIN SITE TEMP (°C)</label>
+            <input type="number" class="field-input" placeholder="e.g. 15"
+              [ngModel]="c6MinTemp()" (ngModelChange)="c6MinTemp.set($event)" />
+          </div>
+          <div class="field-row field-row--full">
+            <label class="field-label">MAX SITE TEMP (°C)</label>
+            <input type="number" class="field-input" placeholder="e.g. 40"
+              [ngModel]="c6MaxTemp()" (ngModelChange)="c6MaxTemp.set($event)" />
+          </div>
+        </div>
+        <div class="result-box" [class.result-ready]="c6Result() !== null">
+          @if (c6Result(); as r) {
+            @if (r.valid) {
+              <div class="result-label">Panels Per String</div>
+              <div class="result-value">{{ r.minS }}–{{ r.maxS }} <span class="result-unit">panels</span></div>
+              <div class="result-note">
+                VOC at min temp: {{ r.vocCold | number:'1.1-1' }}V &nbsp;·&nbsp;
+                VMP at max temp: {{ r.vmpHot | number:'1.1-1' }}V
+              </div>
+            } @else {
+              <div class="result-warn">⚠️ No valid string length — check inverter voltage range vs panel specs</div>
+            }
+          } @else {
+            <span class="result-empty">Enter all values to see result</span>
+          }
+        </div>
+      </div>
+    </div>
+
+    <!-- ── 7. Voltage Drop Check ── -->
+    <div class="calc-card">
+      <div class="calc-card-header">
+        <div class="calc-icon">📉</div>
+        <div>
+          <h3 class="calc-title">Voltage Drop Check</h3>
+          <p class="calc-desc">Verify cable losses stay within 3% limit</p>
+        </div>
+      </div>
+      <div class="calc-body">
+        <div class="field-row">
+          <label class="field-label">CIRCUIT TYPE</label>
+          <select class="native-select" [ngModel]="c7Circuit()" (ngModelChange)="c7Circuit.set($event)">
+            @for (t of circuitTypes; track t.value) {
+              <option [value]="t.value">{{ t.label }}</option>
+            }
+          </select>
+        </div>
+        <div class="field-row">
+          <label class="field-label">SYSTEM VOLTAGE</label>
+          <select class="native-select" [ngModel]="c7Voltage()" (ngModelChange)="c7Voltage.set($event)">
+            @for (v of dropVoltages; track v.value) {
+              <option [value]="v.value">{{ v.label }}</option>
+            }
+          </select>
+        </div>
+        <div class="field-row">
+          <label class="field-label">CURRENT (Amps)</label>
+          <input type="number" class="field-input" placeholder="e.g. 20"
+            [ngModel]="c7Current()" (ngModelChange)="c7Current.set($event)" />
+        </div>
+        <div class="field-row">
+          <label class="field-label">CABLE LENGTH (m)</label>
+          <input type="number" class="field-input" placeholder="e.g. 15"
+            [ngModel]="c7Length()" (ngModelChange)="c7Length.set($event)" />
+        </div>
+        <div class="field-row">
+          <label class="field-label">CABLE CROSS-SECTION</label>
+          <select class="native-select" [ngModel]="c7CrossSection()" (ngModelChange)="c7CrossSection.set($event)">
+            @for (c of cableSizes; track c.value) {
+              <option [value]="c.value">{{ c.label }}</option>
+            }
+          </select>
+        </div>
+        <div class="result-box" [class.result-ready]="c7Result() !== null" [class.result-fail]="c7Result() !== null && !c7Result()!.ok">
+          @if (c7Result(); as r) {
+            <div class="result-label">Voltage Drop</div>
+            <div class="result-value">{{ r.pct | number:'1.2-2' }}<span class="result-unit">%</span>
+              <span class="result-badge" [class.badge-ok]="r.ok" [class.badge-fail]="!r.ok">
+                {{ r.ok ? '✓ PASS' : '✗ FAIL' }}
+              </span>
+            </div>
+            <div class="result-note">{{ r.vDrop | number:'1.2-2' }}V drop — limit is 3% ({{ r.ok ? 'within limit' : 'exceeds limit — use larger cable' }})</div>
+          } @else {
+            <span class="result-empty">Enter values to see result</span>
+          }
+        </div>
+      </div>
+    </div>
+
+    <!-- ── 8. PV String Wire Sizing ── -->
+    <div class="calc-card">
+      <div class="calc-card-header">
+        <div class="calc-icon">🔗</div>
+        <div>
+          <h3 class="calc-title">PV String Wire Sizing</h3>
+          <p class="calc-desc">Minimum wire size for your parallel string combiner</p>
+        </div>
+      </div>
+      <div class="calc-body">
+        <div class="field-row">
+          <label class="field-label">PANEL ISC (A)</label>
+          <input type="number" class="field-input" placeholder="e.g. 13.5"
+            [ngModel]="c8Isc()" (ngModelChange)="c8Isc.set($event)" />
+        </div>
+        <div class="field-row">
+          <label class="field-label">STRINGS IN PARALLEL</label>
+          <input type="number" class="field-input" placeholder="e.g. 2" min="1"
+            [ngModel]="c8Strings()" (ngModelChange)="c8Strings.set($event)" />
+        </div>
+        <div class="result-box" [class.result-ready]="c8Result() !== null">
+          @if (c8Result(); as r) {
+            @if (r.size !== null) {
+              <div class="result-label">Minimum Wire Size</div>
+              <div class="result-value">{{ r.size }} <span class="result-unit">mm²</span></div>
+              <div class="result-note">Max current: {{ r.maxI | number:'1.1-1' }}A (ISC × strings × 1.25) — rated at {{ r.rating }}A</div>
+            } @else {
+              <div class="result-warn">⚠️ Current ({{ r.maxI | number:'1.1-1' }}A) exceeds 50mm² — consult an engineer</div>
+            }
+          } @else {
+            <span class="result-empty">Enter values to see result</span>
+          }
+        </div>
+      </div>
+    </div>
+
+    <!-- ── 9. Inverter Output Breaker ── -->
+    <div class="calc-card">
+      <div class="calc-card-header">
+        <div class="calc-icon">⚙️</div>
+        <div>
+          <h3 class="calc-title">Inverter Output Breaker</h3>
+          <p class="calc-desc">AC breaker for inverter output protection</p>
+        </div>
+      </div>
+      <div class="calc-body">
+        <div class="field-row">
+          <label class="field-label">OUTPUT PHASE</label>
+          <select class="native-select" [ngModel]="c9Phase()" (ngModelChange)="c9Phase.set($event)">
+            <option value="single">Single Phase</option>
+            <option value="three">Three Phase</option>
+          </select>
+        </div>
+        <div class="field-row">
+          <label class="field-label">INVERTER RATED OUTPUT (VA or W)</label>
+          <input type="number" class="field-input" placeholder="e.g. 5000"
+            [ngModel]="c9Output()" (ngModelChange)="c9Output.set($event)" />
+        </div>
+        <div class="field-row">
+          <label class="field-label">OUTPUT VOLTAGE</label>
+          <select class="native-select" [ngModel]="c9Voltage()" (ngModelChange)="c9Voltage.set($event)">
+            @for (v of acVoltages; track v.value) {
+              <option [value]="v.value">{{ v.label }}</option>
+            }
+          </select>
+        </div>
+        <div class="result-box" [class.result-ready]="c9Result() !== null">
+          @if (c9Result(); as r) {
+            <div class="result-label">Recommended Output Breaker</div>
+            <div class="result-value">{{ r.size }}A <span class="result-unit">breaker</span></div>
+            <div class="result-note">Running: {{ r.current | number:'1.1-1' }}A — design: {{ r.design | number:'1.1-1' }}A (×1.25)</div>
+          } @else {
+            <span class="result-empty">Enter values to see result</span>
+          }
+        </div>
+      </div>
+    </div>
+
+    <!-- ── 10. Earthing Conductor Sizing ── -->
+    <div class="calc-card">
+      <div class="calc-card-header">
+        <div class="calc-icon">🌍</div>
+        <div>
+          <h3 class="calc-title">Earthing Conductor Sizing</h3>
+          <p class="calc-desc">Minimum earth wire size per IEC 60364 rule</p>
+        </div>
+      </div>
+      <div class="calc-body">
+        <div class="field-row">
+          <label class="field-label">ACTIVE CONDUCTOR MATERIAL</label>
+          <select class="native-select" [ngModel]="c10Material()" (ngModelChange)="c10Material.set($event)">
+            <option value="copper">Copper</option>
+            <option value="aluminum">Aluminum</option>
+          </select>
+        </div>
+        <div class="field-row">
+          <label class="field-label">ACTIVE CONDUCTOR SIZE (mm²)</label>
+          <select class="native-select" [ngModel]="c10ActiveSize()" (ngModelChange)="c10ActiveSize.set($event)">
+            @for (s of conductorSizes; track s.value) {
+              <option [value]="s.value">{{ s.label }}</option>
+            }
+          </select>
+        </div>
+        <div class="result-box" [class.result-ready]="c10Result() !== null">
+          @if (c10Result() !== null) {
+            <div class="result-label">Minimum Earthing Conductor</div>
+            <div class="result-value">{{ c10Result() }} <span class="result-unit">mm²</span></div>
+            <div class="result-note">IEC 60364-5-54 simplified rule — use same material as active conductor</div>
+          } @else {
+            <span class="result-empty">Select conductor size to see result</span>
+          }
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /calc-grid -->
+
+  <!-- ── Newsletter Footer ── -->
+  <footer class="newsletter-footer">
+    <div class="newsletter-content">
+      <i class="pi pi-envelope newsletter-icon"></i>
+      <h2>Solar PV Insights Newsletter</h2>
+      <p>Get practical tips on solar design, estimation, pricing, and industry news in the Philippines. Free, weekly, no spam.</p>
+      <div class="newsletter-actions">
+        <p-button label="Subscribe Free →" />
+        <p-button label="📖 Read Our Articles" [outlined]="true" severity="secondary" />
+      </div>
+      <p class="newsletter-note">Join our growing community of solar professionals and homeowners.</p>
+    </div>
+  </footer>
+
+  <div class="site-footer">
+    <p>Created by Engr. Jason Morales</p>
+    <p><a href="mailto:support@solarenergyph.shop">support&#64;solarenergyph.shop</a></p>
+    <p><a href="#">LinkedIn Profile</a></p>
+    <div class="footer-links">
+      <a href="#">Privacy Policy</a>
+      <span>·</span>
+      <a href="#">About &amp; Contact</a>
+    </div>
+  </div>
+
+</div>

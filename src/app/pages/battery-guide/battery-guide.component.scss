@@ -1,0 +1,262 @@
+.page-wrapper {
+  max-width: 940px;
+  margin: 0 auto;
+  padding: 1.5rem 1rem 0;
+}
+
+// ---- Page header ----
+.page-header {
+  background: linear-gradient(to right,
+      #1e3a5f,
+      #3b72d4);
+  color: #fff;
+  border-radius: 8px;
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 1rem;
+
+  h1 {
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: 0.35rem;
+  }
+
+  p {
+    font-size: 0.82rem;
+    color: #cbd5e1;
+  }
+}
+
+// ---- How to read ----
+.guide-box {
+  background-color: #fff;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+  padding: 1rem 1.25rem;
+  margin-bottom: 1.25rem;
+
+  h3 {
+    font-size: 0.9rem;
+    font-weight: 700;
+    margin-bottom: 0.4rem;
+  }
+}
+
+.guide-tiers {
+  font-size: 0.8rem;
+  margin-bottom: 0.3rem;
+}
+
+.guide-note {
+  font-size: 0.75rem;
+  color: #64748b;
+}
+
+// ---- Tier section ----
+.tier-section {
+  margin-bottom: 1.25rem;
+}
+
+.tier-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.7rem 1.25rem;
+  border-radius: 8px 8px 0 0;
+  color: #fff;
+
+  &.tier-a {
+    background: linear-gradient(to right, #1a4d38, #3a9e6e);
+  }
+
+  &.tier-b {
+    background: linear-gradient(to right, #1a3d7c, #3b72d4);
+  }
+
+  &.tier-c {
+    background: linear-gradient(to right, #3a3f4e, #7a8498);
+  }
+}
+
+.tier-key {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.tier-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+.tier-title {
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.tier-desc {
+  font-size: 0.75rem;
+  opacity: 0.85;
+}
+
+// ---- Battery grid ----
+.battery-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background-color: #e2e8f0;
+  border: 1px solid #e2e8f0;
+  border-top: none;
+  border-radius: 0 0 8px 8px;
+  overflow: hidden;
+}
+
+.battery-card {
+  background-color: #fff;
+  padding: 0.85rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.battery-brand {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #1e2d4e;
+}
+
+.battery-model {
+  font-size: 0.72rem;
+  color: #64748b;
+}
+
+.battery-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+}
+
+// ---- Tags / chips ----
+.tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.tag-capacity {
+  background-color: #f1f5f9;
+  color: #475569;
+}
+
+.tag-price {
+  background-color: #dbeafe;
+  color: #1d4ed8;
+}
+
+.battery-pwh {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #f97316;
+  margin-top: 0.1rem;
+}
+
+// ---- Newsletter footer ----
+.newsletter-footer {
+  background-color: #1e2d4e;
+  border-radius: 8px;
+  margin: 1.5rem 0 0;
+  padding: 2.5rem 1.5rem;
+  text-align: center;
+  color: #fff;
+}
+
+.newsletter-icon {
+  font-size: 1.5rem;
+  color: #94a3b8;
+  margin-bottom: 0.75rem;
+}
+
+.newsletter-content {
+  h2 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 0.6rem;
+  }
+
+  p {
+    font-size: 0.85rem;
+    color: #94a3b8;
+    max-width: 480px;
+    margin: 0 auto 1.25rem;
+  }
+}
+
+.newsletter-actions {
+  display: flex;
+  justify-content: center;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+  flex-wrap: wrap;
+
+  :host ::ng-deep .p-button:first-child {
+    background-color: #f97316;
+    border-color: #f97316;
+    font-weight: 700;
+  }
+
+  :host ::ng-deep .p-button:last-child {
+    border-color: #94a3b8;
+    color: #cbd5e1;
+  }
+}
+
+.newsletter-note {
+  font-size: 0.72rem;
+  color: #64748b;
+}
+
+// ---- Site footer ----
+.site-footer {
+  background-color: #0f1d36;
+  margin: 0 -1rem;
+  padding: 1.5rem 1rem;
+  text-align: center;
+
+  p,
+  a {
+    font-size: 0.78rem;
+    color: #64748b;
+    line-height: 1.8;
+  }
+
+  a:hover {
+    color: #94a3b8;
+  }
+}
+
+.footer-links {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+
+  a {
+    font-size: 0.75rem;
+    color: #64748b;
+  }
+
+  span {
+    color: #334155;
+  }
+}

@@ -1,0 +1,332 @@
+<div class="max-w-container">
+  <!-- Repeating PDF Header (Only visible on export) -->
+  <div class="print-header">
+    <div style="font-weight: 700; font-size: 18px; color: var(--k-black);">KUNINI <span
+        style="font-weight: 400;">SOLAR</span></div>
+    <div style="font-size: 12px; color: var(--k-dark-grey);">Price Estimation Report</div>
+  </div>
+  <!-- Repeating PDF Footer (Only visible on export) -->
+  <div class="print-footer">
+    <!-- ELECTRICAL & SOLAR EPC CONTRACTORS | -->
+    HUAHIN • PATTAYA • BANGKOK | www.kunini.com
+  </div>
+  <!-- Page Header (Hidden on Print) -->
+  <div class="no-print container-content !mb-2 !flex-row justify-between flex-wrap" style="margin-top:1rem;">
+    <h1>Price Estimation Builder</h1>
+    <p-button [routerLink]="['/detail','6']" [rounded]="true" variant="outlined" severity="danger">
+      <i class="fa-solid fa-xmark"></i>
+    </p-button>
+  </div>
+  <div class="container-content">
+
+    <!-- 1. Customer Information -->
+    <div class="card">
+      <div class="card-header">
+        <h2 class="font-bold">1. Customer Information</h2>
+      </div>
+      <div class="grid grid-cols-2">
+        <div class="input-group">
+          <span class="input-label">Customer Name / Company</span>
+          <div style="font-size: 14px; font-weight: 700; color: var(--k-black);">John Doe Residence</div>
+        </div>
+        <div class="input-group">
+          <span class="input-label">Contact Reference</span>
+          <div style="font-size: 14px;">+66 81 234 5678 | john.doe&#64;mail.com</div>
+        </div>
+        <div class="input-group full-width">
+          <span class="input-label">Installation Address</span>
+          <div style="font-size: 14px;">123/45 Sukhumvit Road, Nong Prue, Bang Lamung, Pattaya</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. Electric Bill -->
+    <div class="card">
+      <div class="card-header">
+        <h2 class="font-bold">2. Electric Bill Details</h2>
+      </div>
+      <div class="grid grid-cols-3">
+        <div class="input-group">
+          <label class="input-label">Electric Bill Name</label>
+          <input type="text" placeholder="Name on bill">
+        </div>
+        <div class="input-group">
+          <label class="input-label">Electric Bill Amount (฿)</label>
+          <input type="text" placeholder="e.g. 5,500">
+        </div>
+        <div class="input-group">
+          <label class="input-label">CA / Ref No. 1</label>
+          <input type="text" placeholder="Account Ref">
+        </div>
+        <div class="input-group">
+          <label class="input-label">Installation No.</label>
+          <input type="text" placeholder="Installation ID">
+        </div>
+        <div class="input-group">
+          <label class="input-label">Electricity Usage Type</label>
+          <p-select [options]="electricityOptions" appendTo="body" [(ngModel)]="selectedElectricityUsageType"
+            optionLabel="label" optionValue="value" [filter]="true" filterBy="label,value" [showClear]="true"
+            placeholder="Select Electricity Usage Type" class="w-full">
+          </p-select>
+        </div>
+        <div class="input-group">
+          <label class="input-label">KWH Consumption / Month</label>
+          <input type="text" placeholder="e.g. 1200">
+        </div>
+
+        <div class="input-group full-width no-print mt-4">
+          <label class="input-label">Attach File</label>
+          <div class="upload-area">
+            + Drag & Drop Electric Bill PDF/Image here
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. System Configuration -->
+    <div class="card">
+      <div class="card-header">
+        <h2 class="font-bold">3. System Configuration</h2>
+      </div>
+
+      <div class="input-group mb-4">
+        <label class="input-label" style="margin-bottom: 8px;">Type of System</label>
+        <div class="toggle-group">
+          <div class="toggle-btn">On-Grid</div>
+          <div class="toggle-btn active">Hybrid</div>
+          <div class="toggle-btn">Off-Grid</div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-2" style="margin-top: 24px;">
+        <!-- Panels -->
+        <div>
+          <label class="input-label" style="margin-bottom: 8px; color: var(--k-black);">Solar
+            Panels</label>
+          <div class="repeat-row">
+            <p-select [options]="solarPanelOptions" appendTo="body" [(ngModel)]="selectedSolarPanel" optionLabel="label"
+              optionValue="value" [filter]="true" filterBy="label,value" [showClear]="true"
+              placeholder="Select a Solar Panel" class="w-full">
+            </p-select>
+            <input type="number" placeholder="Qty">
+            <button class="icon-btn no-print" title="Remove">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="3 6 5 6 21 6"></polyline>
+                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
+                </path>
+              </svg>
+            </button>
+          </div>
+          <button class="btn-text no-print">+ Add another type of panel</button>
+        </div>
+
+        <!-- Inverters -->
+        <div>
+          <label class="input-label" style="margin-bottom: 8px; color: var(--k-black);">Inverters</label>
+          <div class="repeat-row">
+            <p-select [options]="inverterOptions" appendTo="body" [(ngModel)]="selectedInverter" optionLabel="label"
+              optionValue="value" [filter]="true" filterBy="label,value" [showClear]="true"
+              placeholder="Select an Inverter" class="w-full">
+            </p-select>
+            <input type="number" placeholder="Qty">
+            <button class="icon-btn no-print" title="Remove">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="3 6 5 6 21 6"></polyline>
+                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
+                </path>
+              </svg>
+            </button>
+          </div>
+          <button class="btn-text no-print">+ Add another type of inverter</button>
+        </div>
+
+        <!-- Batteries -->
+        <div style="margin-top: 16px;">
+          <label class="input-label" style="margin-bottom: 8px; color: var(--k-black);">Battery
+            Storage</label>
+          <div class="repeat-row">
+            <p-select [options]="batteryOptions" appendTo="body" [(ngModel)]="selectedBattery" optionLabel="label"
+              optionValue="value" [filter]="true" filterBy="label,value" [showClear]="true"
+              placeholder="Select a Battery" class="w-full">
+            </p-select>
+            <input type="number" placeholder="Qty">
+            <button class="icon-btn no-print" title="Remove">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="3 6 5 6 21 6"></polyline>
+                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
+                </path>
+              </svg>
+            </button>
+          </div>
+          <button class="btn-text no-print">+ Add another battery</button>
+        </div>
+
+        <!-- Other Products -->
+        <div style="margin-top: 16px;">
+          <label class="input-label" style="margin-bottom: 8px; color: var(--k-black);">Other
+            Products</label>
+          <p-select [options]="otherOptions" appendTo="body" [(ngModel)]="other" optionLabel="label" optionValue="value"
+            [filter]="true" filterBy="label,value" [showClear]="true" placeholder="Select Other Products"
+            class="w-full">
+          </p-select>
+          <!-- <select style="width: calc(100% - 52px);">
+            <option>None</option>
+            <option>Optimizers</option>
+            <option>Smart Meter</option>
+            <option>EV Charger Integration</option>
+          </select> -->
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= PAGE 2 ================= -->
+    <div class="page-break"></div>
+
+    <!-- 4. System Summary -->
+    <div class="card">
+      <div class="card-header">
+        <h2 class="font-bold">4. System Summary</h2>
+      </div>
+      <div class="grid grid-cols-4">
+        <div class="metric-box full-width" style="background: var(--k-dark-grey); color: white;">
+          <div class="metric-lbl" style="color: var(--k-light-grey);">Estimated Total Investment</div>
+          <div class="metric-val" style="color: white; font-size: 20px;">฿ 350,000.00</div>
+        </div>
+
+        <div class="metric-box">
+          <div class="metric-lbl">DC Capacity</div>
+          <div class="metric-val" style="color: var(--k-black);">10.5 kWp</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-lbl">Total Inverter</div>
+          <div class="metric-val" style="color: var(--k-black);">10 kW</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-lbl">Battery Storage</div>
+          <div class="metric-val" style="color: var(--k-black);">10 kWh</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-lbl">CO2 Offset / Yr</div>
+          <div class="metric-val" style="color: var(--k-accent-green);">7.2 Tons</div>
+        </div>
+
+        <div class="metric-box">
+          <div class="metric-lbl">Payback Period (ROI)</div>
+          <div class="metric-val" style="color: var(--k-black);">4.5 Years</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-lbl">Annual Production</div>
+          <div class="metric-val" style="color: var(--k-black);">14,500 kWh</div>
+        </div>
+        <div class="metric-box" style="border-color: var(--k-red);">
+          <div class="metric-lbl">Est. Monthly Savings</div>
+          <div class="metric-val">฿ 6,500</div>
+        </div>
+        <div class="metric-box" style="border-color: var(--k-red);">
+          <div class="metric-lbl">Annual Savings</div>
+          <div class="metric-val">฿ 78,000</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= PAGE 3 ================= -->
+    <div class="page-break"></div>
+
+    <!-- 5. Monthly Energy Output -->
+    <div class="card">
+      <div class="card-header">
+        <h2 class="font-bold">5. Monthly Energy Output</h2>
+      </div>
+
+      <!-- Graph Placeholder -->
+      <div class="chart-placeholder">
+        [ Bar Chart: Monthly Production vs Monthly Savings ]
+      </div>
+
+      <div class="grid grid-cols-2">
+        <div class="metric-box">
+          <div class="metric-lbl">Average Monthly Production</div>
+          <div class="metric-val" style="color: var(--k-black);">1,208 kWh</div>
+        </div>
+        <div class="metric-box" style="border-color: var(--k-red);">
+          <div class="metric-lbl">Average Monthly Savings</div>
+          <div class="metric-val">฿ 6,500</div>
+        </div>
+      </div>
+
+      <div
+        style="margin-top: 20px; font-size: 12px; color: var(--k-mid-grey); background: var(--bg-color); padding: 12px; border-radius: var(--radius-sm);">
+        <strong>Calculation Formula Used:</strong> <br>
+        Daily kW Production = System Size (kW) × 4.5 hrs (Peak Sunlight) × 85% (System Efficiency)
+      </div>
+    </div>
+
+    <!-- 6. Cash Flow Analysis -->
+    <div class="card">
+      <div class="card-header">
+        <h2 class="font-bold">6. Cash Flow Analysis</h2>
+      </div>
+
+      <div class="chart-placeholder">
+        [ Line Chart: Cumulative Savings vs Total Investment over 10 Years ]
+      </div>
+
+      <div class="grid grid-cols-4">
+        <div class="metric-box">
+          <div class="metric-lbl">Total Investment</div>
+          <div class="metric-val" style="color: var(--k-black);">฿ 350k</div>
+        </div>
+        <div class="metric-box" style="border-color: var(--k-red);">
+          <div class="metric-lbl">Year 1 Savings</div>
+          <div class="metric-val" style="color: var(--k-red);">฿ 78k</div>
+        </div>
+        <div class="metric-box" style="border-color: var(--k-accent-green);">
+          <div class="metric-lbl">5 Year Savings</div>
+          <div class="metric-val" style="color: var(--k-accent-green);">฿ 390k</div>
+        </div>
+        <div class="metric-box" style="border-color: var(--k-accent-green);">
+          <div class="metric-lbl">10 Year Savings</div>
+          <div class="metric-val" style="color: var(--k-accent-green);">฿ 780k</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= PAGE 4 ================= -->
+    <div class="page-break"></div>
+    <!-- 7. Energy Demand Analysis -->
+    <div class="card">
+      <div class="card-header">
+        <h2 class="font-bold">7. Energy Demand Analysis</h2>
+      </div>
+
+      <div class="chart-placeholder">
+        [ Area Chart: 24h Peak Demand Profile (Before vs After Solar) ]
+      </div>
+
+      <div class="grid grid-cols-3">
+        <div class="metric-box">
+          <div class="metric-lbl">Peak Demand (Before Solar)</div>
+          <div class="metric-val" style="color: var(--k-dark-grey);">8.5 kW</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-lbl">Peak Demand (After Solar)</div>
+          <div class="metric-val" style="color: var(--k-black);">2.1 kW</div>
+        </div>
+        <div class="metric-box" style="border-color: var(--k-red);">
+          <div class="metric-lbl">Demand Reduction</div>
+          <div class="metric-val">75.2%</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom Actions (Hidden on Print) -->
+    <div class="no-print"
+      style="display: flex; justify-content: flex-end; gap: 12px; margin-bottom: 16px;">
+      <button class="k-btn k-btn-outline" [routerLink]="['/detail',7]">Save Draft</button>
+      <button class="k-btn k-btn-primary">Export to PDF</button>
+    </div>
+  </div>
+</div>

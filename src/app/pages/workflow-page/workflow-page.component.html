@@ -1,0 +1,86 @@
+<div class="workflow-wrapper">
+  @if(!isLoading()) {
+  <nav class="wf-nav-bar"  >
+    <div class="wf-nav-main">
+      @for (tag of allTags(); track tag;) {
+      <button class="k-btn-sm" [ngClass]="{'k-btn-primary': isTagSelected(tag), 'k-btn-outline': !isTagSelected(tag)}"
+        (click)="toggleTag(tag, !isTagSelected(tag))">{{ tag }} </button>
+      }
+    </div>
+    <div class="wf-nav-right">
+      <button class="k-btn-sm k-btn-primary" (click)="openNewCustomerDialog()">
+        <i class="fa-solid fa-plus fs-[12px]"></i> &nbsp;
+        <span pButtonLabel>Customer</span>
+      </button>
+    </div>
+  </nav>
+  }
+
+
+  <!-- <div class="workflow-header">
+    <h1>Solar Project Workflow</h1>
+    <span class="total-badge">{{ columns().length }} stages</span>
+  </div> -->
+
+  @if (isLoading()) {
+  <app-k-loading></app-k-loading>
+  <!-- <div class="loading-state">Loading customers…</div> -->
+  } @else {
+  <div class="board" cdkDropListGroup>
+    @for (col of columns(); track col.id) {
+    <div class="column">
+      <div class="column-header">
+        <span class="column-title">{{ col.name }}</span>
+        <span class="column-count" [style.backgroundColor]="col.headerColor">
+          {{ cardCount(col) }}
+        </span>
+      </div>
+
+      <div class="card-list" cdkDropList cdkScrollable [id]="col.id" [cdkDropListData]="col.cards"
+        [cdkDropListConnectedTo]="columnIds" (cdkDropListDropped)="drop($event, col.id)">
+        @for (card of col.cards; track card.id) {
+        <div class="card" cdkDrag (click)="openDetail(card)">
+          <div class="card-drag-preview" *cdkDragPreview>
+            <div class="card-name">{{ card.name }}</div>
+          </div>
+          <div class="card-placeholder" *cdkDragPlaceholder></div>
+
+          <div class="card-top">
+            <span class="avatar" [ngClass]="card.tagsLocation">
+              <!-- {{ avatarLetter(card) }} -->
+              {{ card.name.toUpperCase()}}
+            </span>
+          </div>
+          <div class="flex flex-wrap items-center justify-between">
+            <div class="card-price">{{ formatPrice(card.price) }}</div>
+            <span class="card-date">{{ card.date }}</span>
+          </div>
+          <div class="card-footer">
+            <div class="card-tags">
+              @for (tag of visibleTags(card.tagsTotal); track tag) {
+              <span class="tag">{{ tag }}</span>
+              }
+              @if (hiddenTagCount(card.tagsTotal) > 0) {
+              <span class="tag tag-overflow">+{{ hiddenTagCount(card.tagsTotal) }}</span>
+              }
+            </div>
+          </div>
+        </div>
+        }
+
+        @if (col.cards.length === 0) {
+        <div class="empty-column">Drop cards here</div>
+        }
+      </div>
+    </div>
+    }
+  </div>
+  }
+</div>
+
+<p-dialog header="Create New Customer Profile" [visible]="showNewCustomerDialog()"
+  (visibleChange)="showNewCustomerDialog.set($event)" [modal]="true" [style]="{ width: '620px', maxWidth: '95vw' }"
+  [draggable]="false" [resizable]="false">
+  <app-new-customer-page (saved)="onCustomerSaved()" (cancelled)="onCustomerCancelled()">
+  </app-new-customer-page>
+</p-dialog>

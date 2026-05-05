@@ -1,0 +1,235 @@
+<div class="max-w-container">
+    <div class="flex justify-between items-center header-actions sticky-header p-[24px]">
+        <div class="flex items-center gap-4">
+            <div class="k-icon-header"><i class="fa-solid fa-user"></i></div>
+            <div>
+                <div class="client-name">John Doe</div>
+                <div class="client-status"><span class="dot-green"></span> Active Client</div>
+            </div>
+            <!-- <h1 style="font-size: 24px; margin: 0;">
+                <i class="fa-solid fa-id-badge ic-hd"></i> John Doe
+            </h1> -->
+        </div>
+        <div class="flex gap-2 header-buttons">
+            <button class="k-btn-sm k-btn-outline"><i class="fa-solid fa-pen"></i> Edit</button>
+            <button class="k-btn-sm k-btn-primary" [routerLink]="'/estimate'">Estimate</button>
+            <button class="k-btn-sm k-btn-primary">Survey</button>
+
+            <div class="dropdown">
+                <button class="k-btn-sm k-btn-primary">Additional Work <i class="fa-solid fa-angle-down"></i></button>
+                <div class="dropdown-content">
+                    <a href="#">Maintenance</a>
+                    <a href="#">System Cleaning</a>
+                    <a href="#">Battery Upgrade</a>
+                </div>
+            </div>
+
+            <button class="k-btn-sm k-btn-primary">Quote</button>
+        </div>
+    </div>
+
+    <!-- MAIN LAYOUT -->
+    <div class="layout-grid">
+        <div class="flex-col gap-6">
+            <div class="card max-w-[100vw] overflow-x-auto mb-6">
+                <div class="card-header">
+                    <h2>Client Information</h2>
+                </div>
+                <table class="contact-table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Phone</th>
+                            <th>Email</th>
+                            <th>Type</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        @for (contact of contacts; track contact.id) {
+                        <tr [class.editing-row]="contact.isEditing">
+                            @if (contact.isEditing) {
+                            <td>
+                                <input class="table-input" [(ngModel)]="contact.name" placeholder="Full name" />
+                            </td>
+                            <td><input class="table-input" [(ngModel)]="contact.phone" placeholder="+66 xx xxx xxxx" />
+                            </td>
+                            <td><input class="table-input" [(ngModel)]="contact.email"
+                                    placeholder="email@example.com" /></td>
+                            <td>
+                                <select class="table-select" [(ngModel)]="contact.type">
+                                    <option value="Primary">Primary</option>
+                                    <option value="Secondary">Secondary</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </td>
+                            <td class="action-cell">
+                                <button class="btn-icon btn-save" (click)="saveContact(contact)" title="Save"><i
+                                        class="fa-solid fa-check"></i></button>
+                                <button class="btn-icon btn-remove" (click)="removeContact(contact.id)"
+                                    title="Remove"><i class="fa-solid fa-trash"></i></button>
+                            </td>
+                            } @else {
+                            <td><strong>{{ contact.name }}</strong></td>
+                            <td>{{ contact.phone }}</td>
+                            <td>{{ contact.email }}</td>
+                            <td><span class="contact-type-badge" [class]="'type-' + contact.type.toLowerCase()">{{
+                                    contact.type }}</span></td>
+                            <td class="action-cell">
+                                <button class="btn-icon btn-remove" (click)="removeContact(contact.id)"
+                                    title="Remove">✕</button>
+                            </td>
+                            }
+                        </tr>
+                        }
+                    </tbody>
+                </table>
+
+                <div class="mt-4">
+                    <button class="k-btn btn-text" (click)="addContact()">+ Add Another Contact</button>
+                </div>
+
+                <div class="divider"></div>
+
+                <div class="info-group">
+                    <span class="info-label">Location</span>
+                    <div class="tag-group">
+                        <span class="tag-item active HuaHin">Pattaya</span>
+                        <span class="tag-item Huahin">Huahin</span>
+                        <span class="tag-item Bangkok">Bangkok</span>
+                        <span class="tag-item Up-Country">Up Country</span>
+                    </div>
+                </div>
+
+                <div class="info-group">
+                    <span class="info-label">Project Type</span>
+                    <div class="tag-group">
+                        <span class="tag-item active">Residential</span>
+                        <span class="tag-item">Commercial</span>
+                        <span class="tag-item">Upgrade</span>
+                    </div>
+                </div>
+
+                <div class="info-group">
+                    <span class="info-label">Type of System</span>
+                    <div class="tag-group">
+                        <span class="tag-item">On-Grid</span>
+                        <span class="tag-item">Off-Grid</span>
+                        <span class="tag-item active">Hybrid</span>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="flex-col gap-6">
+            <div class="card mb-6">
+                <div class="card-header !mb-0 !p-0">
+                    <h2>Status</h2>
+                    <p-select [options]="statusList" class="status-select" [(ngModel)]="statusSelected"
+                        optionLabel="label" optionValue="label" placeholder="Select a status">
+                    </p-select>
+                </div>
+            </div>
+            <div class="card mb-6">
+                <div class="card-header">
+                    <h2><i class="fa-solid fa-solar-panel" style="color: var(--k-red);"></i> System Details</h2>
+                    <span class="badge" style="background-color: var(--k-accent-green); color: white;">Current</span>
+                </div>
+
+                <div class="flex-col gap-4">
+                    <div class="flex justify-between items-center border-bottom pb-2">
+                        <span class="info-label mb-0"><i class="fa-solid fa-sun"></i> Total Installed PV</span>
+                        <span class="info-value"><strong>10.5 kWp</strong></span>
+                    </div>
+                    <div class="divider" style="margin: 8px 0;"></div>
+
+                    <div class="flex justify-between items-center border-bottom pb-2">
+                        <span class="info-label mb-0"><i class="fa-solid fa-bolt"></i> Inverter Size</span>
+                        <span class="info-value"><strong>10 kW (Hybrid)</strong></span>
+                    </div>
+                    <div class="divider" style="margin: 8px 0;"></div>
+
+                    <div class="flex justify-between items-center border-bottom pb-2">
+                        <span class="info-label mb-0"><i class="fa-solid fa-battery-full"></i> Battery Size</span>
+                        <span class="info-value"><strong>10 kWh</strong></span>
+                    </div>
+                    <div class="divider" style="margin: 8px 0;"></div>
+
+                    <div class="flex justify-between items-center">
+                        <span class="info-label mb-0"><i class="fa-solid fa-tag"></i> System Price</span>
+                        <span class="info-value" style="color: var(--k-red); font-weight: 700;">฿
+                            350,000.00</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- FULL WIDTH BOTTOM SECTIONS -->
+    <div class="flex flex-col gap-6">
+
+        <!-- Notes Section (Full Width) -->
+        <div class="card">
+            <div class="card-header">
+                <h2>Internal Notes</h2>
+                <button class="btn btn-outline" style="font-size: 12px; padding: 6px 12px;" (click)="toggleNoteForm()">
+                    {{ showNoteForm ? '✕ Cancel' : '+ Add Note' }}
+                </button>
+            </div>
+
+            @if (showNoteForm) {
+            <div class="note-form">
+                <textarea class="form-textarea" [(ngModel)]="newNoteText" placeholder="Write your note here..." rows="4"
+                    autofocus></textarea>
+                <div class="note-form-actions">
+                    <button class="k-btn k-btn-primary" (click)="saveNote()" [disabled]="!newNoteText.trim()">Save
+                        Note</button>
+                    <button class="k-btn k-btn-outline" (click)="toggleNoteForm()">Cancel</button>
+                </div>
+            </div>
+            }
+
+            @for (note of notes; track note.id) {
+            <div class="note-item">
+                <div class="note-item-body">
+                    <div class="text-sm mb-2 w-full note-text" readonly>{{ note.text }}</div>
+                    <div class="item-meta">{{ note.date | date:'dd MMM yyyy' }} • by <strong>{{ note.author }}</strong>
+                    </div>
+                </div>
+                <button class="btn-icon btn-remove note-delete-btn" (click)="removeNote(note.id)"
+                    title="Remove note">✕</button>
+            </div>
+            }
+
+            @if (notes.length === 0) {
+            <div class="note-empty">No notes yet. Click "+ Add Note" to get started.</div>
+            }
+        </div>
+
+        <!-- Document History Card (Full Width) -->
+        <div class="card mb-[1.5rem]">
+            <div class="card-header">
+                <h2>Historys</h2>
+            </div>
+            <div class="doc-list">
+                <div class="doc-item">
+                    <a href="#" class="doc-item-title">📄 Estimate_v1_Hybrid.pdf</a>
+                    <div class="item-meta" style="text-align: right;">02 May 2026 • by <strong>Staff_Jane</strong>
+                    </div>
+                </div>
+                <div class="doc-item">
+                    <a href="#" class="doc-item-title">📄 Site_Survey_Report.pdf</a>
+                    <div class="item-meta" style="text-align: right;">28 Apr 2026 • by <strong>Staff_Mark</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>

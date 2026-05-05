@@ -1,3 +1,24 @@
 import { Routes } from '@angular/router';
+import { EstimatePageComponent } from './pages/estimate-page/estimate-page.component';
+import { BatteryGuideComponent } from './pages/battery-guide/battery-guide.component';
+import { CalculatorsPageComponent } from './pages/calculators-page/calculators-page.component';
+import { DashboardComponent } from './pages/dashboard/dashboard.component';
+import { LoginPageComponent } from './pages/login-page/login-page.component';
+import { StaffMainLayoutComponent } from './staff-main-layout/staff-main-layout.component';
+import { WorkflowPageComponent } from './pages/workflow-page/workflow-page.component';
+import { CustomerDetailPageComponent } from './pages/customer-detail-page/customer-detail-page.component';
 
-export const routes: Routes = [];
+export const routes: Routes = [
+  { path: '', redirectTo: 'login', pathMatch: 'full' },
+  { path: 'login', component: LoginPageComponent },
+  {
+    path: '', component: StaffMainLayoutComponent, children: [
+      { path: 'workflow', component: WorkflowPageComponent },
+      { path: 'dashboard', component: DashboardComponent },
+      { path: 'estimate', component: EstimatePageComponent },
+      { path: 'battery-guide', component: BatteryGuideComponent },
+      { path: 'calculators', component: CalculatorsPageComponent },
+      { path: 'detail/:id', component: CustomerDetailPageComponent }
+    ]
+  }
+];

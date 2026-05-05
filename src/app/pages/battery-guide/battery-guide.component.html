@@ -1,0 +1,78 @@
+<div class="max-w-[780px] mx-auto px-4 py-5">
+  <!-- Page header -->
+  <div class="page-header">
+    <h1>Battery Brand Tier List</h1>
+    <p>LiFePO4 batteries ranked by cost per Wh — lower ₱/Wh = better value. Prices include 10% markup.</p>
+  </div>
+
+  <!-- How to read guide -->
+  <div class="guide-box">
+    <h3>How to Read This Guide</h3>
+    <p class="guide-tiers">
+      <strong>S Tier</strong> = Best value (lowest ₱/Wh) &nbsp;|&nbsp;
+      <strong>A Tier</strong> = Good value &nbsp;|&nbsp;
+      <strong>B Tier</strong> = Mid-range &nbsp;|&nbsp;
+      <strong>C Tier</strong> = Premium price.
+    </p>
+    <p class="guide-note">
+      All prices are estimated retail in Philippine Peso (PHP). ₱/Wh = total battery price divided by capacity in watt-hours.
+      Compatible with Solis, Deye, and LuxPower hybrid inverters via CAN/RS485.
+    </p>
+  </div>
+
+  <!-- Tier sections -->
+  @for (tier of tiers; track tier.key) {
+    <section class="tier-section">
+      <div class="tier-header {{ tier.colorClass }}">
+        <div class="tier-key">{{ tier.key }}</div>
+        <div class="tier-info">
+          <span class="tier-title">{{ tier.title }}</span>
+          <span class="tier-desc">{{ tier.description }}</span>
+        </div>
+      </div>
+
+      <div class="battery-grid">
+        @for (battery of tier.batteries; track battery.model) {
+          <div class="battery-card">
+            <div class="battery-brand">{{ battery.brand }}</div>
+            <div class="battery-model">{{ battery.model }}</div>
+            <div class="battery-tags">
+              <span class="tag tag-capacity">
+                {{ battery.capacityKwh | number:'1.2-2' }} kWh capacity
+              </span>
+              <span class="tag tag-price">
+                ₱{{ battery.price | number:'1.2-2' }} price
+              </span>
+            </div>
+            <div class="battery-pwh tag-pwh">₱{{ battery.pricePerWh | number:'1.1-1' }}/Wh</div>
+          </div>
+        }
+      </div>
+    </section>
+  }
+
+  <!-- Newsletter footer -->
+  <footer class="newsletter-footer">
+    <div class="newsletter-content">
+      <i class="pi pi-envelope newsletter-icon"></i>
+      <h2>Solar PV Insights Newsletter</h2>
+      <p>Get practical tips on solar design, estimation, pricing, and industry news in the Philippines. Free, weekly, no spam.</p>
+      <div class="newsletter-actions">
+        <p-button label="Subscribe Free →" />
+        <p-button label="📖 Read Our Articles" [outlined]="true" severity="secondary" />
+      </div>
+      <p class="newsletter-note">Join our growing community of solar professionals and homeowners.</p>
+    </div>
+  </footer>
+
+  <div class="site-footer">
+    <p>Created by Engr. Jason Morales</p>
+    <p><a href="mailto:support@solarenergyph.shop">support&#64;solarenergyph.shop</a></p>
+    <p><a href="#">LinkedIn Profile</a></p>
+    <div class="footer-links">
+      <a href="#">Privacy Policy</a>
+      <span>·</span>
+      <a href="#">About &amp; Contact</a>
+    </div>
+  </div>
+</div>

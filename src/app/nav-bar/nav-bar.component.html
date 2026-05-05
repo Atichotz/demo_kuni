@@ -1,0 +1,21 @@
+<nav class="nav-bar">
+  <div class="nav-main">
+    @for (item of mainNavItems; track item.route) {
+    <a [routerLink]="item.route" routerLinkActive="active" class="nav-item">
+      <i class="pi {{ item.icon }}"></i>
+      <span>{{ item.label }}</span>
+    </a>
+    }
+  </div>
+
+  <div class="nav-right">
+    <a routerLink="/dashboard" routerLinkActive="active" class="nav-item dashboard-item">
+      <i class="pi pi-chart-bar"></i>
+      <span>
+        Installer Dashboard
+        <span class="new-badge">★ new</span>
+      </span>
+    </a>
+    <p-button label="Logout" [outlined]="true" size="small" [routerLink]="'/login'" />
+  </div>
+</nav>

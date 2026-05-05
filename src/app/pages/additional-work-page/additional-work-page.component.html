@@ -1,0 +1,121 @@
+<div class="max-w-[780px] mx-auto px-4 py-5">
+
+  <!-- ── Section 3: System Configuration ── -->
+  <div class="bg-white rounded-xl p-5 shadow-sm border border-slate-100">
+    <h2 class="font-bold text-base mb-5 flex items-center gap-3">
+      <span class="section-badge">3</span>
+      System Configuration
+    </h2>
+
+    <!-- System type toggle -->
+    <label class="field-label mb-2">SYSTEM TYPE</label>
+    <div class="grid grid-cols-2 gap-0 mb-5 rounded-lg overflow-hidden border border-slate-200">
+      <button
+        (click)="systemType.set('hybrid')"
+        [class]="systemType() === 'hybrid'
+          ? 'py-3 font-semibold text-sm bg-[#1e2d4e] text-white'
+          : 'py-3 font-semibold text-sm bg-white text-slate-600 hover:bg-slate-50'">
+        ⚡ Hybrid — On/Off-Grid + Battery
+      </button>
+      <button
+        (click)="systemType.set('grid-tied')"
+        [class]="systemType() === 'grid-tied'
+          ? 'py-3 font-semibold text-sm bg-[#1e2d4e] text-white'
+          : 'py-3 font-semibold text-sm bg-white text-slate-600 hover:bg-slate-50'">
+        ◀ Grid-Tied — On-Grid Only
+      </button>
+    </div>
+
+    <!-- System size -->
+    <label class="field-label mb-2">SYSTEM SIZE (DC CAPACITY)</label>
+    <div class="flex flex-wrap gap-2 mb-5">
+      @for (s of systemSizes; track s.kw) {
+        <button
+          (click)="systemSize.set(s.kw)"
+          [class]="systemSize() === s.kw
+            ? 'size-btn border-orange-400 text-orange-500 bg-orange-50'
+            : 'size-btn border-slate-200 text-slate-700 hover:border-slate-300'">
+          <span class="font-bold text-sm">{{ s.kw }} kW</span>
+          <span class="text-[10px] text-slate-400">{{ s.panels }}</span>
+        </button>
+      }
+    </div>
+
+    <!-- Panel & Inverter -->
+    <div class="grid grid-cols-2 gap-4 mb-4">
+      <div class="flex flex-col gap-1">
+        <label class="field-label">SOLAR PANEL</label>
+        <select [ngModel]="solarPanel()" (ngModelChange)="solarPanel.set($event)" class="native-select">
+          @for (o of solarPanelOptions; track o.value) {
+            <option [value]="o.value">{{ o.label }}</option>
+          }
+        </select>
+      </div>
+      <div class="flex flex-col gap-1">
+        <label class="field-label">INVERTER</label>
+        <select [ngModel]="inverterModel()" (ngModelChange)="inverterModel.set($event)" class="native-select">
+          @for (o of inverterOptions; track o.value) {
+            <option [value]="o.value">{{ o.label }}</option>
+          }
+        </select>
+      </div>
+    </div>
+
+    <!-- Battery & Installation -->
+    <div class="grid grid-cols-2 gap-4 mb-5">
+      <div class="flex flex-col gap-1">
+        <label class="field-label">BATTERY STORAGE</label>
+        <select [ngModel]="batteryStorage()" (ngModelChange)="batteryStorage.set($event)" class="native-select">
+          @for (o of batteryOptions; track o.value) {
+            <option [value]="o.value">{{ o.label }}</option>
+          }
+        </select>
+      </div>
+      <div class="flex flex-col gap-1">
+        <label class="field-label">INCLUDE INSTALLATION?</label>
+        <select [ngModel]="includeInstallation()" (ngModelChange)="includeInstallation.set($event)" class="native-select">
+          @for (o of installationOptions; track o.value) {
+            <option [value]="o.value">{{ o.label }}</option>
+          }
+        </select>
+      </div>
+    </div>
+
+    <!-- Estimated Total Investment -->
+    <div class="rounded-xl p-5 bg-gradient-to-br from-[#1e3a5f] to-[#2d5a8e]">
+      <p class="text-slate-400 text-xs font-semibold tracking-widest uppercase mb-1">
+        Estimated Total Investment
+      </p>
+      <p class="text-white text-4xl font-bold mb-4">
+        ₱{{ totalCost() | number:'1.2-2' }}
+      </p>
+      <div class="grid grid-cols-3 gap-2">
+        <div class="stat-box">
+          <span class="stat-value">{{ dcCapacity() | number:'1.2-2' }} kWp</span>
+          <span class="stat-label">DC Capacity</span>
+        </div>
+        <div class="stat-box">
+          <span class="stat-value">₱{{ monthlySavings() | number:'1.2-2' }}</span>
+          <span class="stat-label">Est. Monthly Savings</span>
+        </div>
+        <div class="stat-box">
+          <span class="stat-value">{{ paybackPeriod() | number:'1.1-1' }} yrs</span>
+          <span class="stat-label">Payback Period</span>
+        </div>
+        <div class="stat-box">
+          <span class="stat-value">{{ annualProduction() | number:'1.2-2' }} kWh</span>
+          <span class="stat-label">Annual Production</span>
+        </div>
+        <div class="stat-box">
+          <span class="stat-value">₱{{ annualSavings() | number:'1.2-2' }}</span>
+          <span class="stat-label">Annual Savings</span>
+        </div>
+        <div class="stat-box">
+          <span class="stat-value">{{ co2Offset() | number:'1.2-2' }} kg</span>
+          <span class="stat-label">CO₂ Offset / Yr</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

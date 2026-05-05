@@ -1,0 +1,73 @@
+.brand-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  // background:var(--k-red);
+  background: linear-gradient(to left, var(--k-red), #cb2331);
+  padding: 0.6rem 2rem;
+  min-height: 52px;
+  // position: sticky;
+  // top: 0px;
+  // z-index: 99;
+}
+
+.brand-left {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.brand-right {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.logo-img {
+  width: 36px;
+  height: 36px;
+  border-radius: 6px;
+  object-fit: cover;
+}
+
+.brand-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+.brand-name {
+  color: #fff;
+  font-size: 13.6px;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+
+.brand-tagline {
+  color: #94a3b8;
+  font-size: 0.7rem;
+}
+
+.solar-guide-link {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: #fff;
+  font-size: 0.85rem;
+  font-weight: 600;
+  transition: opacity 0.15s;
+
+  &:hover {
+    opacity: 0.8;
+  }
+
+  .pi {
+    font-size: 0.85rem;
+  }
+}
+
+@media print{
+  .brand-header {
+    display: none;
+  }
+}

@@ -1,0 +1,226 @@
+ .modal-overlay {
+     position: fixed;
+     top: 0;
+     left: 0;
+     width: 100%;
+     height: 100%;
+     background: var(--bg-overlay);
+     display: flex;
+     justify-content: center;
+     align-items: center;
+     z-index: 1000;
+ }
+
+ .modal-card {
+     background: var(--card-bg);
+     width: 100%;
+     max-width: 800px;
+     max-height: 90vh;
+     border-radius: var(--radius-lg);
+     display: flex;
+     flex-direction: column;
+     box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+     overflow: hidden;
+ }
+
+ .modal-header {
+     padding: 24px;
+     border-bottom: 1px solid var(--k-light-grey);
+     display: flex;
+     justify-content: space-between;
+     align-items: center;
+ }
+
+ .modal-body {
+     padding: 24px;
+     overflow-y: auto;
+ }
+
+ .modal-footer {
+     padding: 20px 24px;
+     border-top: 1px solid var(--k-light-grey);
+     display: flex;
+     justify-content: flex-end;
+     gap: 12px;
+     background-color: #fafafa;
+ }
+
+ /* =========================================
+           4. FORM ELEMENTS
+           ========================================= */
+ .form-section {
+     margin-bottom: 32px;
+ }
+
+ .form-section-title {
+     font-size: 14px;
+     font-weight: 700;
+     text-transform: uppercase;
+     letter-spacing: 0.05em;
+     color: var(--k-black);
+     margin-bottom: 16px;
+     display: block;
+     border-bottom: 1px solid var(--k-light-grey);
+     padding-bottom: 8px;
+ }
+
+ .grid {
+     display: grid;
+     grid-template-columns: 1fr 1fr;
+     gap: 16px;
+     margin-bottom: 16px;
+ }
+
+ .full-width {
+     grid-column: span 2;
+ }
+
+ .input-group {
+     display: flex;
+     flex-direction: column;
+     gap: 6px;
+ }
+
+ label {
+     font-size: 12px;
+     font-weight: 700;
+     color: var(--k-mid-grey);
+ }
+
+ input,
+ select,
+ textarea {
+     padding: 10px 14px;
+     border: 1px solid var(--k-mid-grey);
+     border-radius: var(--radius-sm);
+     font-size: 14px;
+     outline: none;
+     transition: border-color 0.2s;
+ }
+
+ input:focus,
+ select:focus {
+     border-color: var(--k-red);
+ }
+
+ /* Toggles & Custom Radio */
+ .type-toggle {
+     position: relative;
+     display: flex;
+     background: var(--k-light-grey);
+     padding: 4px;
+     border-radius: var(--radius-pill);
+     width: fit-content;
+     margin-bottom: 20px;
+ }
+
+ .toggle-slider {
+     position: absolute;
+     top: 4px;
+     bottom: 4px;
+     left: 4px;
+     width: calc((100% - 8px) / 2);
+     background: var(--k-red);
+     border-radius: var(--radius-pill);
+     transition: transform 0.25s ease;
+
+     &.slide-right {
+         transform: translateX(100%);
+     }
+ }
+
+ .type-option {
+     position: relative;
+     z-index: 1;
+     padding: 6px 20px;
+     border-radius: var(--radius-pill);
+     cursor: pointer;
+     font-size: 13px;
+     font-weight: 700;
+     flex: 1;
+     text-align: center;
+     transition: color 0.25s ease;
+ }
+
+ .type-option.active {
+     color: white;
+ }
+
+ /* Tags for Dialog */
+ .tag-select-group {
+     display: flex;
+     flex-wrap: wrap;
+     gap: 8px;
+ }
+
+ .tag-pill {
+     padding: 6px 16px;
+     border: 1px solid var(--k-mid-grey);
+     border-radius: var(--radius-pill);
+     font-size: 12px;
+     cursor: pointer;
+     font-weight: 600;
+ }
+
+ .tag-pill.selected {
+     background: var(--k-dark-grey);
+     color: white;
+     border-color: var(--k-dark-grey);
+ }
+
+ /* Custom Status Select */
+ .status-select {
+     appearance: none;
+     -webkit-appearance: none;
+     padding: 6px 6px 6px 16px;
+     border-radius: var(--radius-pill);
+     max-width: 250px;
+     font-size: 12px;
+     font-weight: 600;
+ }
+
+ /* Buttons */
+ .btn {
+     padding: 10px 24px;
+     border-radius: var(--radius-pill);
+     font-size: 14px;
+     font-weight: 700;
+     cursor: pointer;
+     border: 1px solid transparent;
+     transition: 0.2s;
+ }
+
+ .btn-cancel {
+     background: transparent;
+     border-color: var(--k-mid-grey);
+     color: var(--k-dark-grey);
+ }
+
+ .btn-save {
+     background: var(--k-red);
+     color: white;
+ }
+
+ .btn-save:hover {
+     background: #8c1621;
+ }
+
+ .add-contact-btn {
+     color: var(--accent-blue);
+     font-size: 13px;
+     cursor: pointer;
+     background: none;
+     border: none;
+     font-weight: 600;
+     margin-top: 8px;
+     display: flex;
+     align-items: center;
+     gap: 4px;
+ }
+
+ ::ng-deep .status-select .p-select-label {
+     padding: 0 !important;
+ }
+.status-select:focus {
+    --k-light-grey: var(--k-red);
+}

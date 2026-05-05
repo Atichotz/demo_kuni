@@ -29,9 +29,16 @@
               {
                 "glob": "**/*",
                 "input": "public"
+              },
+              {
+                "glob": "**/*",
+                "input": "src/assets",
+                "output": "assets"
               }
             ],
             "styles": [
+              "node_modules/primeicons/primeicons.css",
+              "src/tailwind.css",
               "src/styles.scss"
             ],
             "scripts": [],
@@ -39,6 +46,13 @@
             "outputMode": "server",
             "ssr": {
               "entry": "src/server.ts"
+            },
+            "security": {
+              "allowedHosts": [
+                "localhost",
+                "127.0.0.1",
+                "192.168.1.333"
+              ]
             }
           },
           "configurations": {
@@ -46,13 +60,13 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "500kB",
-                  "maximumError": "1MB"
+                  "maximumWarning": "10MB",
+                  "maximumError": "10MB"
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "4kB",
-                  "maximumError": "8kB"
+                  "maximumWarning": "10MB",
+                  "maximumError": "10MB"
                 }
               ],
               "outputHashing": "all"
@@ -67,6 +81,16 @@
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "host": "0.0.0.0",
+            "port": 4200,
+            "allowedHosts": [
+              "localhost",
+              "127.0.0.1",
+              "192.168.1.33",
+              "192.168.1.133"
+            ]
+          },
           "configurations": {
             "production": {
               "buildTarget": "kunini-solar:build:production"
@@ -103,5 +127,8 @@
         }
       }
     }
+  },
+  "cli": {
+    "analytics": "c364131f-6f3c-41d1-bfdb-5d1b5bb44aca"
   }
 }
