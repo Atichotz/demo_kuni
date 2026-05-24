@@ -1,12 +1,15 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputTextModule } from 'primeng/inputtext';
 import { SelectModule } from 'primeng/select';
-import { RouterLink } from "@angular/router";
+import { RouterLink, ActivatedRoute } from '@angular/router';
+import { CustomerService } from '../../services/customer.service';
+import type { CustomerDetail, StatusOption } from '../../dto/customer.dto';
+
 interface Contact {
-  id: number;
+  id: string;
   name: string;
   phone: string;
   email: string;
@@ -27,40 +30,74 @@ interface Note {
   templateUrl: './customer-detail-page.component.html',
   styleUrl: './customer-detail-page.component.scss'
 })
-export class CustomerDetailPageComponent {
-  private nextContactId = 3;
-  private nextNoteId = 3;
-  statusSelected = 'On-Going';
-  contacts: Contact[] = [
-    { id: 1, name: 'John Doe', phone: '+66 81 234 5678', email: 'john.doe@example.com', type: 'Primary', isEditing: false },
-    { id: 2, name: 'Jane Doe', phone: '+66 89 876 5432', email: 'jane.doe@example.com', type: 'Secondary', isEditing: false },
-  ];
-  statusList = [
-    { label: 'Need Analysis', value: 'need_analysis' },
-    { label: 'Proposed', value: 'proposed' },
-    { label: 'On-Going', value: 'on_going' },
-    { label: 'On Hold / Review', value: 'on_hold' },
-    { label: 'To Be Installed', value: 'to_be_installed' },
-    { label: 'Installed', value: 'installed' },
-    { label: 'Rejected', value: 'rejected' }
-  ];
-  notes: Note[] = [
-    { id: 1, text: 'Customer requested to review the battery options before final sign-off.', date: new Date('2026-05-02'), author: 'Staff_Jane' },
-    { id: 2, text: 'Initial consultation done.', date: new Date('2026-04-28'), author: 'Staff_Mark' },
-  ];
+export class CustomerDetailPageComponent implements OnInit {
+  private readonly route = inject(ActivatedRoute);
+  private readonly customerService = inject(CustomerService);
 
+  customer: CustomerDetail | null = null;
+  isLoading = true;
+
+  contacts: Contact[] = [];
+  statusList: StatusOption[] = [];
+  statusSelected: number | null = null;
+
+  private nextTempId = 0;
+  private nextNoteId = 1;
+
+  notes: Note[] = [];
   showNoteForm = false;
   newNoteText = '';
 
+  get currentStatusName(): string {
+    return this.statusList.find(s => s.id === this.statusSelected)?.status_name ?? '';
+  }
+
+  ngOnInit(): void {
+    const id = this.route.snapshot.paramMap.get('id');
+    if (!id) return;
+
+    this.customerService.getStatuses().subscribe({
+      next: (statuses) => { this.statusList = statuses; },
+      error: (err) => console.error('[API] Failed to load statuses:', err),
+    });
+
+    this.customerService.getOne(id).subscribe({
+      next: (data) => {
+        this.customer = data;
+        this.statusSelected = data.statusId;
+        this.contacts = data.contacts.map(c => ({
+          id: c.id,
+          name: `${c.firstname ?? ''} ${c.lastname ?? ''}`.trim(),
+          phone: c.tel ?? '',
+          email: c.email ?? '',
+          type: c.isPrimary ? 'Primary' : 'Secondary',
+          isEditing: false,
+        }));
+        this.isLoading = false;
+      },
+      error: (err) => {
+        console.error('[API] Failed to load customer:', err);
+        this.isLoading = false;
+      },
+    });
+  }
+
   addContact(): void {
-    this.contacts.push({ id: this.nextContactId++, name: '', phone: '', email: '', type: 'Other', isEditing: true });
+    this.contacts.push({
+      id: `new-${this.nextTempId++}`,
+      name: '',
+      phone: '',
+      email: '',
+      type: 'Other',
+      isEditing: true,
+    });
   }
 
   saveContact(contact: Contact): void {
     contact.isEditing = false;
   }
 
-  removeContact(id: number): void {
+  removeContact(id: string): void {
     this.contacts = this.contacts.filter(c => c.id !== id);
   }
 

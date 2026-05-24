@@ -1,4 +1,5 @@
-import { Component, OnInit, inject, signal, computed } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject, signal, computed, NgZone } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { CdkDragDrop, CdkDropList, CdkDrag, CdkDragPreview, CdkDragPlaceholder, CdkDropListGroup, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { CdkScrollable } from '@angular/cdk/scrolling';
 import { CommonModule } from '@angular/common';
@@ -36,20 +37,33 @@ const COLUMN_DEFS: Omit<WorkflowColumn, 'cards'>[] = [
   templateUrl: './workflow-page.component.html',
   styleUrl: './workflow-page.component.scss'
 })
-export class WorkflowPageComponent implements OnInit {
+export class WorkflowPageComponent implements OnInit, OnDestroy {
   constructor(private router: Router) { }
 
   showNewCustomerDialog = signal(false);
   showSuccessPopup = false;
+  private recentlyDraggedId: string | null = null;
+  private realtimeSubscription: Subscription | null = null;
+  private isOwnReorder = false;
+  private ownReorderTimer: ReturnType<typeof setTimeout> | null = null;
+  private reloadDebounceTimer: ReturnType<typeof setTimeout> | null = null;
 
   openNewCustomerDialog(): void {
     this.showNewCustomerDialog.set(true);
   }
-
-  onCustomerSaved(): void {
+  newCustomerData: any;
+  onCustomerSaved(newCustomerData: any): void {
     this.showNewCustomerDialog.set(false);
     this.showSuccessPopup = true;
+    this.newCustomerData = newCustomerData;
+    this.loadCustomers();
+  }
 
+  onCustomerCancelled(): void {
+    this.showNewCustomerDialog.set(false);
+  }
+
+  private loadCustomers(): void {
     this.workflowService.getCustomers().subscribe({
       next: (customers) => {
         this.sourceColumns.set(COLUMN_DEFS.map(def => ({
@@ -59,14 +73,11 @@ export class WorkflowPageComponent implements OnInit {
             .map(c => ({ ...c, tagsTotal: [...c.tagsCustomer, ...c.tagsSystem] })),
         })));
       },
-      error: (err) => console.error('[API] Failed to reload customers after save:', err),
+      error: (err) => console.error('[API] Failed to reload customers:', err),
     });
   }
-
-  onCustomerCancelled(): void {
-    this.showNewCustomerDialog.set(false);
-  }
   private workflowService = inject(WorkflowService);
+  private ngZone = inject(NgZone);
 
   private sourceColumns = signal<WorkflowColumn[]>(
     COLUMN_DEFS.map(def => ({ ...def, cards: [] }))
@@ -117,6 +128,49 @@ export class WorkflowPageComponent implements OnInit {
         this.isLoading.set(false);
       }
     });
+
+    this.realtimeSubscription = this.workflowService.listenToStatusChanges().subscribe(({ id, statusId }) => {
+      this.ngZone.run(() => {
+        if (id === this.recentlyDraggedId) return;
+
+        const cols = this.sourceColumns();
+        let movedCard: Customer | undefined;
+        let fromColIndex = -1;
+
+        for (let i = 0; i < cols.length; i++) {
+          const idx = cols[i].cards.findIndex(c => c.id === id);
+          if (idx !== -1) {
+            movedCard = cols[i].cards[idx];
+            fromColIndex = i;
+            break;
+          }
+        }
+
+        if (!movedCard) return;
+
+        const toColIndex = cols.findIndex(c => c.id === statusId);
+        if (toColIndex === -1) return;
+        if (fromColIndex === toColIndex) {
+          // sort_order เปลี่ยน (same-column reorder จาก tab อื่น) → debounce reload
+          if (!this.isOwnReorder) {
+            if (this.reloadDebounceTimer) clearTimeout(this.reloadDebounceTimer);
+            this.reloadDebounceTimer = setTimeout(() => this.loadCustomers(), 300);
+          }
+          return;
+        }
+
+        const updated = cols.map(c => ({ ...c, cards: [...c.cards] }));
+        updated[fromColIndex].cards = updated[fromColIndex].cards.filter(c => c.id !== id);
+        updated[toColIndex].cards.push({ ...movedCard, statusId });
+        this.sourceColumns.set(updated);
+      });
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.realtimeSubscription?.unsubscribe();
+    if (this.ownReorderTimer) clearTimeout(this.ownReorderTimer);
+    if (this.reloadDebounceTimer) clearTimeout(this.reloadDebounceTimer);
   }
 
   get columnIds(): string[] {
@@ -138,6 +192,10 @@ export class WorkflowPageComponent implements OnInit {
   }
 
   drop(event: CdkDragDrop<Customer[]>, targetColumnId: number): void {
+    this.isOwnReorder = true;
+    if (this.ownReorderTimer) clearTimeout(this.ownReorderTimer);
+    this.ownReorderTimer = setTimeout(() => { this.isOwnReorder = false; }, 3000);
+
     const cols = this.sourceColumns();
     const targetIndex = cols.findIndex(c => c.id === targetColumnId);
     const updated = cols.map(c => ({ ...c, cards: [...c.cards] }));
@@ -163,9 +221,20 @@ export class WorkflowPageComponent implements OnInit {
             : actualCards.findIndex(c => c.id === filteredAfter[event.currentIndex].id);
         actualCards.splice(insertIdx, 0, draggedCard);
       } else {
-        moveItemInArray(updated[targetIndex].cards, event.previousIndex, event.currentIndex);
+        // mutate in-place — ให้ CDK ยังชี้ array เดิม ไม่ reset animation
+        this.sourceColumns.update(currentCols => {
+          moveItemInArray(currentCols[targetIndex].cards, event.previousIndex, event.currentIndex);
+          return currentCols.map((col, i) => i === targetIndex ? { ...col } : col);
+        });
+        this.workflowService.reorderCustomers(
+          this.sourceColumns()[targetIndex].cards.map((c, i) => ({ id: c.id, sortOrder: i }))
+        ).subscribe({ error: (err) => console.error('[API] Failed to reorder:', err) });
+        return;
       }
       this.sourceColumns.set(updated);
+      this.workflowService.reorderCustomers(
+        updated[targetIndex].cards.map((c, i) => ({ id: c.id, sortOrder: i }))
+      ).subscribe({ error: (err) => console.error('[API] Failed to reorder:', err) });
       return;
     }
 
@@ -194,7 +263,7 @@ export class WorkflowPageComponent implements OnInit {
           c => c.id === filteredTarget[event.currentIndex].id
         );
       }
-      updated[targetIndex].cards.splice(actualCurrIdx, 0, draggedCard);
+      updated[targetIndex].cards.splice(actualCurrIdx, 0, { ...draggedCard, statusId: targetColumnId });
     } else {
       transferArrayItem(
         updated[sourceIndex].cards,
@@ -202,21 +271,30 @@ export class WorkflowPageComponent implements OnInit {
         event.previousIndex,
         event.currentIndex
       );
+      updated[targetIndex].cards[event.currentIndex] = {
+        ...updated[targetIndex].cards[event.currentIndex],
+        statusId: targetColumnId,
+      };
     }
 
     this.sourceColumns.set(updated);
-
-    console.log("update drop:", {
-      id: draggedCard.id,
-      statusId: targetColumnId,
-    });
+    this.recentlyDraggedId = draggedCard.id;
 
     this.workflowService.updateCustomerStatus({
       id: draggedCard.id,
       statusId: targetColumnId,
     }).subscribe({
-      error: (err) => console.error('[API] Failed to update customer status:', err),
+      next: () => { this.recentlyDraggedId = null; },
+      error: (err) => {
+        console.error('[API] Failed to update customer status:', err);
+        this.recentlyDraggedId = null;
+      },
     });
+
+    this.workflowService.reorderCustomers([
+      ...updated[sourceIndex].cards.map((c, i) => ({ id: c.id, sortOrder: i })),
+      ...updated[targetIndex].cards.map((c, i) => ({ id: c.id, sortOrder: i })),
+    ]).subscribe({ error: (err) => console.error('[API] Failed to reorder:', err) });
   }
 
   readonly VISIBLE_TAG_LIMIT = 2;
@@ -241,7 +319,7 @@ export class WorkflowPageComponent implements OnInit {
     return col.cards.length;
   }
 
-  openDetail(card: Customer) {
+  openDetail(card: any) {
     console.log(card);
     this.router.navigate(['/detail', card.id]); // เปลี่ยนเป็น id จริงของ customer ที่ต้องการแสดงรายละเอียด
   }

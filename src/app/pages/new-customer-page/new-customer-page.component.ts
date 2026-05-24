@@ -15,7 +15,7 @@ type SystemTypeOption = 'On-Grid' | 'Off-Grid' | 'Hybrid';
   styleUrls: ['./new-customer-page.component.scss']
 })
 export class NewCustomerPageComponent implements OnInit {
-  @Output() saved = new EventEmitter<void>();
+  @Output() saved = new EventEmitter<any>();
   @Output() cancelled = new EventEmitter<void>();
 
   private readonly customerService = inject(CustomerService);
@@ -92,9 +92,9 @@ export class NewCustomerPageComponent implements OnInit {
         email: this.email,
       },
     }).subscribe({
-      next: () => {
+      next: (res) => {
         this.isSaving = false;
-        this.saved.emit();
+        this.saved.emit(res);
       },
       error: (err: unknown) => {
         this.isSaving = false;

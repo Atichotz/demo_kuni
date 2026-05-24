@@ -179,7 +179,7 @@
   width: 100%;
   font-weight: 700;
 
-  &.HuaHin {
+  &.Huahin {
     background-color: var(--k-huahin);
     border-color: var(--k-huahin);
   }
@@ -304,8 +304,9 @@
   justify-content: space-between;
   background-color: #fff;
   border-bottom: 1px solid #e2e8f0;
-  padding: 0 1.5rem;
+  padding: .5rem 1.5rem;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+  border-radius: 8px;
 }
 
 .wf-nav-main {

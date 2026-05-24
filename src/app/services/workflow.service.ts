@@ -1,7 +1,8 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, EMPTY } from 'rxjs';
 import { environment } from '../../environments/environment';
+import { AuthService } from './auth.service';
 
 export interface Customer {
   id: string;
@@ -24,6 +25,7 @@ export interface CustomerStatusUpdate {
 @Injectable({ providedIn: 'root' })
 export class WorkflowService {
   private readonly http = inject(HttpClient);
+  private readonly authService = inject(AuthService);
   private readonly baseUrl = `${environment.apiUrl}/customers`;
 
   // output: customers ทั้งหมดพร้อม tags และ statusId สำหรับ Kanban
@@ -35,6 +37,43 @@ export class WorkflowService {
   updateCustomerStatus(update: CustomerStatusUpdate): Observable<void> {
     return this.http.patch<void>(`${this.baseUrl}/${update.id}/status`, {
       statusId: update.statusId,
+    });
+  }
+
+  // input: array ของ {id, sortOrder} ทุก card ใน column ที่ถูก drag
+  reorderCustomers(updates: { id: string; sortOrder: number }[]): Observable<void> {
+    return this.http.patch<void>(`${this.baseUrl}/reorder`, { updates });
+  }
+
+  // output: stream ของ {id, statusId} ทุกครั้งที่ tab อื่น update status ของ customer
+  listenToStatusChanges(): Observable<{ id: string; statusId: number }> {
+    const client = this.authService.supabaseClient;
+    if (!client) return EMPTY;
+
+    return new Observable(observer => {
+      // Force JWT ก่อน subscribe — ป้องกัน channel subscribe แบบ anonymous ในช่วง session restore
+      const token = this.authService.getAccessToken();
+      if (token) client.realtime.setAuth(token);
+
+      const channel = client
+        .channel('customers-status-changes')
+        .on(
+          'postgres_changes',
+          { event: 'UPDATE', schema: 'public', table: 'customers' },
+          (payload) => {
+            const record = payload.new as { id: string; status_id: number };
+            if (record.id && record.status_id != null) {
+              observer.next({ id: record.id, statusId: record.status_id });
+            }
+          }
+        )
+        .subscribe((status, err) => {
+          if (err) observer.error(err);
+        });
+
+      return () => {
+        client.removeChannel(channel);
+      };
     });
   }
 }

@@ -109,4 +109,8 @@ export class AuthService {
   getAccessToken(): string | null {
     return this.session$.value?.access_token ?? null;
   }
+
+  get supabaseClient(): SupabaseClient | null {
+    return this.supabase;
+  }
 }

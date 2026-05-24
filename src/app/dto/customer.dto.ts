@@ -4,6 +4,26 @@ export interface StatusOption {
   sort_order: number | null;
 }
 
+export interface ContactDetail {
+  id: string;
+  firstname: string | null;
+  lastname: string | null;
+  tel: string | null;
+  email: string | null;
+  isPrimary: boolean;
+}
+
+export interface CustomerDetail {
+  id: string;
+  displayName: string;
+  projectLocationName: string | null;
+  typeOfCustomerName: string | null;
+  typeOfSystemName: string | null;
+  statusId: number | null;
+  createdAt: string;
+  contacts: ContactDetail[];
+}
+
 export interface CreateCustomerPayload {
   display_name: string;
   project_type: string | null;

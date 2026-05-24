@@ -2,7 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
-import type { StatusOption, CreateCustomerPayload } from '../dto/customer.dto';
+import type { StatusOption, CreateCustomerPayload, CustomerDetail } from '../dto/customer.dto';
 
 @Injectable({ providedIn: 'root' })
 export class CustomerService {
@@ -12,6 +12,12 @@ export class CustomerService {
   // output: รายการ status ทั้งหมดจาก DB
   getStatuses(): Observable<StatusOption[]> {
     return this.http.get<StatusOption[]>(`${this.baseUrl}/statuses`);
+  }
+
+  // input: customer UUID
+  // output: customer detail พร้อม contacts
+  getOne(id: string): Observable<CustomerDetail> {
+    return this.http.get<CustomerDetail>(`${this.baseUrl}/${id}`);
   }
 
   // input: CreateCustomerPayload (created_by แนบโดย backend จาก JWT)
