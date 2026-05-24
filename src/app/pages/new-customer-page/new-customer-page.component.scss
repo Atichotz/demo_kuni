@@ -70,15 +70,14 @@
      gap: 16px;
      margin-bottom: 16px;
  }
+ @media screen and (max-width:457px) {
+    .grid {
+        grid-template-columns: 1fr;
+    }
+ }
 
  .full-width {
      grid-column: span 2;
- }
-
- .input-group {
-     display: flex;
-     flex-direction: column;
-     gap: 6px;
  }
 
  label {
@@ -90,20 +89,10 @@
  input,
  select,
  textarea {
-     padding: 10px 14px;
-     border: 1px solid var(--k-mid-grey);
-     border-radius: var(--radius-sm);
-     font-size: 14px;
-     outline: none;
      transition: border-color 0.2s;
  }
 
- input:focus,
- select:focus {
-     border-color: var(--k-red);
- }
-
- /* Toggles & Custom Radio */
+/* Toggles & Custom Radio */
  .type-toggle {
      position: relative;
      display: flex;
@@ -160,6 +149,7 @@
      font-size: 12px;
      cursor: pointer;
      font-weight: 600;
+     transition: all .3s ease;
  }
 
  .tag-pill.selected {
@@ -223,4 +213,31 @@
  }
 .status-select:focus {
     --k-light-grey: var(--k-red);
+}
+
+input.invalid {
+    border-color: var(--k-red) !important;
+}
+
+.field-error {
+    color: var(--k-red);
+    font-size: 12px;
+    margin-top: 4px;
+    display: block;
+}
+
+.error-banner {
+    background: rgba(var(--k-red-rgb, 180, 30, 40), 0.1);
+    color: var(--k-red);
+    border: 1px solid var(--k-red);
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 13px;
+    margin-top: 16px;
+}
+
+.btn-save:disabled,
+.btn-cancel:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
 }

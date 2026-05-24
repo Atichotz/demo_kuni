@@ -312,10 +312,10 @@
     </div>
 
     <!-- 2. MAIN DASHBOARD CONTENT (ROW 1) -->
-    <div class="grid md:grid-cols-2 mt-4">
+    <div class="flex flex-col gap-4 mt-4">
 
-      <!-- Google Calendar Integration Widget -->
-      <div class="card" style="height: 100%;">
+      <!-- Today's Schedule -->
+      <div class="card">
         <div class="card-header">
           <div class="flex items-center gap-2">
             <i class="fa-regular fa-calendar text-[18px]"></i>
@@ -352,57 +352,104 @@
             </div>
           </div>
         </div>
-
-        <!-- <button class="k-btn k-btn-outline mt-4" style="width: 100%;">+ Add New Event</button> -->
       </div>
 
-      <!-- To-Do List Widget -->
-      <div class="card" style="height: 100%;">
-        <div class="card-header">
-          <div class="flex items-center gap-2">
-            <i class="fa-regular fa-file-lines text-[18px]" style="color: var(--k-red);"></i>
-            <h2>Team To-Do List</h2>
-          </div>
-        </div>
-
-        <div style="flex: 1;">
-          @for (todo of todos(); track todo.id) {
-          <div class="todo-item" [class.done]="todo.done">
-            <input type="checkbox" class="todo-checkbox"
-              [checked]="todo.done"
-              (change)="toggleTask(todo.id)">
-            <div class="todo-content">
-              <div class="todo-title">{{ todo.title }}</div>
-              @if (todo.details) {
-              <div class="todo-details">{{ todo.details }}</div>
-              }
-              <div class="todo-meta">{{ todo.meta }}</div>
+      <div class="grid md:grid-cols-2">
+        <!-- Technician To-Do Card -->
+        <div class="card">
+          <div class="card-header" style="cursor: pointer;" (click)="techCollapsed.set(!techCollapsed())">
+            <div class="flex items-center gap-2">
+              <i class="fa-regular fa-file-lines text-[18px]" style="color: var(--k-accent-blue);"></i>
+              <h2>Technician To-Do</h2>
+              <span class="text-xs font-semibold px-2 py-0.5 rounded-full"
+                style="background: #e8f0fe; color: var(--k-accent-blue);">
+                {{ techTodos().length }}
+              </span>
             </div>
-            <button class="todo-delete" (click)="deleteTask(todo.id)" title="Delete task">✕</button>
+            <i class="fa-solid text-xs transition-transform duration-200" [class.fa-chevron-up]="!techCollapsed()"
+              [class.fa-chevron-down]="techCollapsed()" style="color: var(--k-mid-grey);"></i>
           </div>
-          }
+
+          <div class="collapsible-content" [class.expanded]="!techCollapsed()">
+            <div class="collapsible-inner">
+              <div style="flex: 1;">
+                @for (todo of techTodos(); track todo.id) {
+                <div class="todo-item" [class.done]="todo.done">
+                  <input type="checkbox" class="todo-checkbox" [checked]="todo.done" (change)="toggleTechTask(todo.id)">
+                  <div class="todo-content">
+                    <div class="todo-title">{{ todo.title }}</div>
+                    @if (todo.details) {
+                    <div class="todo-details">{{ todo.details }}</div>
+                    }
+                    <div class="todo-meta">{{ todo.meta }}</div>
+                  </div>
+                  <button class="todo-delete" (click)="deleteTechTask(todo.id); $event.stopPropagation()"
+                    title="Delete task">✕</button>
+                </div>
+                }
+              </div>
+              <div style="margin-top: 16px;">
+                <input #techTaskInput type="text" class="add-todo-input" placeholder="+ Add task and press Enter..."
+                  (keyup.enter)="addTechTask(techTaskInput)" (click)="$event.stopPropagation()">
+              </div>
+            </div>
+          </div>
         </div>
 
-        <!-- Add Task Input -->
-        <div style="margin-top: 16px;">
-          <input #newTaskInput type="text" class="add-todo-input"
-            placeholder="+ Add a new task and press Enter..."
-            (keyup.enter)="addTask(newTaskInput)">
+        <!-- Admin To-Do Card -->
+        <div class="card">
+          <div class="card-header" style="cursor: pointer;" (click)="adminCollapsed.set(!adminCollapsed())">
+            <div class="flex items-center gap-2">
+              <i class="fa-regular fa-file-lines text-[18px]" style="color: var(--k-red);"></i>
+              <h2>Admin To-Do</h2>
+              <span class="text-xs font-semibold px-2 py-0.5 rounded-full"
+                style="background: #fde8ea; color: var(--k-red);">
+                {{ adminTodos().length }}
+              </span>
+            </div>
+            <i class="fa-solid text-xs transition-transform duration-200" [class.fa-chevron-up]="!adminCollapsed()"
+              [class.fa-chevron-down]="adminCollapsed()" style="color: var(--k-mid-grey);"></i>
+          </div>
+
+          <div class="collapsible-content" [class.expanded]="!adminCollapsed()">
+            <div class="collapsible-inner">
+              <div style="flex: 1;">
+                @for (todo of adminTodos(); track todo.id) {
+                <div class="todo-item" [class.done]="todo.done">
+                  <input type="checkbox" class="todo-checkbox" [checked]="todo.done"
+                    (change)="toggleAdminTask(todo.id)">
+                  <div class="todo-content">
+                    <div class="todo-title">{{ todo.title }}</div>
+                    @if (todo.details) {
+                    <div class="todo-details">{{ todo.details }}</div>
+                    }
+                    <div class="todo-meta">{{ todo.meta }}</div>
+                  </div>
+                  <button class="todo-delete" (click)="deleteAdminTask(todo.id); $event.stopPropagation()"
+                    title="Delete task">✕</button>
+                </div>
+                }
+              </div>
+              <div style="margin-top: 16px;">
+                <input #adminTaskInput type="text" class="add-todo-input" placeholder="+ Add task and press Enter..."
+                  (keyup.enter)="addAdminTask(adminTaskInput)" (click)="$event.stopPropagation()">
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-
     </div>
 
     <!-- 3. FULL WEEKLY CALENDAR -->
     <div class="card mt-2">
       <div class="card-header">
         <h2>Team Weekly Calendar</h2>
-        <button class="btn btn-text">Open Full Screen ↗</button>
+        <a class="btn btn-text" href="https://calendar.google.com/calendar" target="_blank">Open Full Screen ↗</a>
       </div>
       <div class="calendar-container">
         <!-- Replace 'src' with your actual public Google Calendar embed link -->
         <iframe
-          src="https://calendar.google.com/calendar/embed?height=600&wkst=1&bgcolor=%23ffffff&ctz=Asia%2FBangkok&mode=WEEK&showPrint=0&showTabs=1&showCalendars=0&showTz=0"
+          src="https://calendar.google.com/calendar/embed?height=600&wkst=2&ctz=Asia%2FBangkok&showPrint=0&mode=MONTH&showTitle=0&src=aW5mb0BrdW5pbmkuY29t&src=Y18yOTY4M2QyMGY0MjFiOTdjZDMyNDc1NDcwZmVkNmNjMmU5ZmYxODA1OWZmMmFkOGYyM2Y2ZDk5N2I1YmU0OGQ0QGdyb3VwLmNhbGVuZGFyLmdvb2dsZS5jb20&src=Y184OWEzYWQwNmFkOGJlODQ1MDRlYTU1MDhmNzJjZTliNzhmZmEyMjg0MTA5M2Q2MzgwMmViYTkxYjc5NTc5ZWZlQGdyb3VwLmNhbGVuZGFyLmdvb2dsZS5jb20&src=Y19jNWYyZjMwYTFhYmI1YWViYWVkOWIzMTc5MmY3OWFiMThiZDVlNGM4Mzk3NDgxODY1MjVhODUwNzQ3NGJmZTAxQGdyb3VwLmNhbGVuZGFyLmdvb2dsZS5jb20&src=Y19jYjE2YWMxNGRmN2IzYmZkNGQwZDY1OGNiMjEwNmM3YjU5Y2IxMDY2ZjUyYWVlMGM0MzBlNTRhNTQ3MjE5NDcwQGdyb3VwLmNhbGVuZGFyLmdvb2dsZS5jb20&src=Y19lNjIxOWE1YmFhNDYzZjlmYTg2ZTRlNDEzOGVkMjg0YWZhMGNlOTI4OTg3YzIzN2NkNDA2OWUxMzZmNDM5ZTQxQGdyb3VwLmNhbGVuZGFyLmdvb2dsZS5jb20&color=%23039be5&color=%23a79b8e&color=%234285f4&color=%23ad1457&color=%239e69af&color=%23ef6c00"
           style="border-width:0" width="100%" height="100%" frameborder="0" scrolling="no"></iframe>
       </div>
     </div>

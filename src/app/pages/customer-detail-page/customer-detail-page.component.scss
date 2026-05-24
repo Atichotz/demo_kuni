@@ -52,10 +52,7 @@ a:hover {
 }
 
 .card {
-    background-color: var(--card-bg);
-    border-radius: var(--radius-lg);
     padding: 24px;
-    border: 1px solid var(--k-light-grey);
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
     transition: all .3s ease;
 }
@@ -65,19 +62,8 @@ a:hover {
 }
 
 .card-header {
-    font-size: 16px;
-    /* Reduced from 18px */
     border-bottom: 2px solid var(--bg-color);
-    padding-bottom: 12px;
     margin-bottom: 16px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.card-header h2 {
-    font-size: 16px;
-    margin: 0;
 }
 
 .btn-text {
@@ -127,16 +113,6 @@ a:hover {
 }
 
 /* Badges / Tags */
-.badge {
-    display: inline-block;
-    padding: 4px 12px;
-    border-radius: var(--radius-pill);
-    font-size: 12px;
-    font-weight: 700;
-    background-color: var(--k-light-grey);
-    color: var(--k-dark-grey);
-}
-
 .badge-project-type {
     background-color: var(--k-black);
     color: #fff;

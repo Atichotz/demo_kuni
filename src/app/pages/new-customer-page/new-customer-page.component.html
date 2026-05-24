@@ -1,16 +1,20 @@
 <div class="modal-body">
     <div class="type-toggle">
-        <div class="toggle-slider" [class.slide-right]="selectedType() === 'company'"></div>
-        <div class="type-option" [class.active]="selectedType() === 'personal'" (click)="selectedType.set('personal')">
+        <div class="toggle-slider" [class.slide-right]="selectedType === 'company'"></div>
+        <div class="type-option" [class.active]="selectedType === 'personal'" (click)="selectedType = 'personal'">
             Personal</div>
-        <div class="type-option" [class.active]="selectedType() === 'company'" (click)="selectedType.set('company')">
+        <div class="type-option" [class.active]="selectedType === 'company'" (click)="selectedType = 'company'">
             Company</div>
     </div>
     <div id="customerForm">
         <div class="form-section" style="margin-bottom: 24px;">
             <div class="input-group">
                 <label>Project Name</label>
-                <input type="text">
+                <input type="text" [(ngModel)]="displayName" name="displayName"
+                    [class.invalid]="touched && !displayName.trim()">
+                @if (touched && !displayName.trim()) {
+                    <span class="field-error">Project name is required</span>
+                }
             </div>
         </div>
 
@@ -19,23 +23,38 @@
             <span class="form-section-title">Primary Contact</span>
             <div class="grid">
                 <div class="input-group">
-                    <label>Name</label>
-                    <input type="text">
+                    <label>First Name</label>
+                    <input type="text" [(ngModel)]="firstname" name="firstname"
+                        [class.invalid]="touched && !firstname.trim()">
+                    @if (touched && !firstname.trim()) {
+                        <span class="field-error">First name is required</span>
+                    }
                 </div>
                 <div class="input-group">
-                    <label>Surname</label>
-                    <input type="text">
+                    <label>Last Name</label>
+                    <input type="text" [(ngModel)]="lastname" name="lastname"
+                        [class.invalid]="touched && !lastname.trim()">
+                    @if (touched && !lastname.trim()) {
+                        <span class="field-error">Last name is required</span>
+                    }
                 </div>
                 <div class="input-group">
                     <label>Phone Number</label>
-                    <input type="tel">
+                    <input type="tel" [(ngModel)]="tel" name="tel"
+                        [class.invalid]="touched && !tel.trim()">
+                    @if (touched && !tel.trim()) {
+                        <span class="field-error">Phone number is required</span>
+                    }
                 </div>
                 <div class="input-group">
                     <label>Email Address</label>
-                    <input type="email">
+                    <input type="email" [(ngModel)]="email" name="email"
+                        [class.invalid]="touched && !email.trim()">
+                    @if (touched && !email.trim()) {
+                        <span class="field-error">Email is required</span>
+                    }
                 </div>
             </div>
-            <!-- <button type="button" class="add-contact-btn">+ Add Secondary Contact</button> -->
         </div>
 
         <!-- Section: Location & Details -->
@@ -45,33 +64,41 @@
                 <div class="input-group full-width">
                     <label>Project Location</label>
                     <div class="tag-select-group">
-                        <div class="tag-pill selected">Pattaya</div>
-                        <div class="tag-pill">Huahin</div>
-                        <div class="tag-pill">Bangkok</div>
-                        <div class="tag-pill">Up Country</div>
+                        @for (loc of locationOptions; track loc) {
+                            <div class="tag-pill" [class.selected]="selectedLocation === loc"
+                                (click)="selectedLocation = loc">{{ loc }}</div>
+                        }
                     </div>
                 </div>
                 <div class="input-group full-width">
                     <label>Type of Customer</label>
                     <div class="tag-select-group">
-                        <div class="tag-pill selected">Residential</div>
-                        <div class="tag-pill">Commercial</div>
-                        <div class="tag-pill">Upgrade</div>
+                        @for (ct of customerTypeOptions; track ct) {
+                            <div class="tag-pill" [class.selected]="selectedCustomerType === ct"
+                                (click)="selectedCustomerType = ct">{{ ct }}</div>
+                        }
                     </div>
                 </div>
                 <div class="input-group full-width">
                     <label>Type of System</label>
                     <div class="tag-select-group">
-                        <div class="tag-pill">On-Grid</div>
-                        <div class="tag-pill">Off-Grid</div>
-                        <div class="tag-pill selected">Hybrid</div>
+                        @for (st of systemTypeOptions; track st) {
+                            <div class="tag-pill" [class.selected]="selectedSystemType === st"
+                                (click)="selectedSystemType = st">{{ st }}</div>
+                        }
                     </div>
                 </div>
                 <div class="input-group full-width">
                     <label>Initial Status</label>
-                    <p-select [options]="statusList" class="status-select" [(ngModel)]="statusSelected"
-                        optionLabel="label" optionValue="label" placeholder="Select a status">
+                    <p-select [options]="statusList" class="status-select"
+                        [(ngModel)]="selectedStatusId" name="status"
+                        optionLabel="status_name" optionValue="id"
+                        placeholder="Select a status"
+                        [class.invalid]="touched && selectedStatusId === null">
                     </p-select>
+                    @if (touched && selectedStatusId === null) {
+                        <span class="field-error">Please select a status</span>
+                    }
                 </div>
             </div>
         </div>
@@ -82,28 +109,28 @@
             <div class="grid">
                 <div class="input-group full-width">
                     <label>Full Address</label>
-                    <input type="text">
+                    <input type="text" [(ngModel)]="fullAddress" name="fullAddress"
+                        [class.invalid]="touched && !fullAddress.trim()">
+                    @if (touched && !fullAddress.trim()) {
+                        <span class="field-error">Address is required</span>
+                    }
                 </div>
                 <div class="input-group full-width">
                     <label>Google Maps Link</label>
-                    <input type="url">
+                    <input type="url" [(ngModel)]="googleMapsLink" name="googleMapsLink">
                 </div>
             </div>
         </div>
-
-        <!-- Section: Initial Notes -->
-        <div class="form-section">
-            <span class="form-section-title">Initial Notes</span>
-            <div class="input-group full-width">
-                <label>Internal Note</label>
-                <textarea style="min-height: 100px; resize: vertical;"></textarea>
-            </div>
-        </div>
-
     </div>
+
+    @if (errorMessage) {
+        <div class="error-banner">{{ errorMessage }}</div>
+    }
 </div>
 
 <div class="modal-footer">
-    <button class="btn btn-cancel" type="button" (click)="onCancel()">Discard</button>
-    <button class="btn btn-save" type="button" (click)="onSave()">Create Profile</button>
+    <button class="btn btn-cancel" type="button" (click)="onCancel()" [disabled]="isSaving">Discard</button>
+    <button class="btn btn-save" type="button" (click)="onSave()" [disabled]="isSaving">
+        @if (isSaving) { Saving... } @else { Create Profile }
+    </button>
 </div>

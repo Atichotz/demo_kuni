@@ -36,7 +36,7 @@
         </span>
       </div>
 
-      <div class="card-list" cdkDropList cdkScrollable [id]="col.id" [cdkDropListData]="col.cards"
+      <div class="card-list" cdkDropList cdkScrollable [id]="col.id.toString()" [cdkDropListData]="col.cards"
         [cdkDropListConnectedTo]="columnIds" (cdkDropListDropped)="drop($event, col.id)">
         @for (card of col.cards; track card.id) {
         <div class="card" cdkDrag (click)="openDetail(card)">
@@ -77,10 +77,17 @@
   </div>
   }
 </div>
-
+@if(showNewCustomerDialog()){
 <p-dialog header="Create New Customer Profile" [visible]="showNewCustomerDialog()"
   (visibleChange)="showNewCustomerDialog.set($event)" [modal]="true" [style]="{ width: '620px', maxWidth: '95vw' }"
   [draggable]="false" [resizable]="false">
   <app-new-customer-page (saved)="onCustomerSaved()" (cancelled)="onCustomerCancelled()">
   </app-new-customer-page>
 </p-dialog>
+}
+@if(showSuccessPopup){
+<p-dialog [visible]="showSuccessPopup" (visibleChange)="showSuccessPopup = $event" [modal]="true" [showHeader]="false"
+  [style]="{ width: 'auto' }" [draggable]="false" [resizable]="false">
+  <app-new-customer-success-popup />
+</p-dialog>
+}

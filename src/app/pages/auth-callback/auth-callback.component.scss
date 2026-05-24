@@ -11,9 +11,3 @@
   left: 0;
   flex-direction: column;
 }
-
-.btn-login {
-  &:disabled {
-    background-color: var(--k-mid-grey);
-  }
-}

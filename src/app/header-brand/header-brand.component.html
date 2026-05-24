@@ -19,7 +19,7 @@
     <a class="solar-guide-link">
       <i class="pi pi-cog"></i>
     </a>
-    <a class="solar-guide-link" [routerLink]="'/login'">
+    <a class="solar-guide-link cursor-pointer"  tooltipPosition="bottom"  [pTooltip]="'Logout'" (click)="logout()" [class.opacity-50]="isLoggingOut" [attr.aria-disabled]="isLoggingOut">
       <i class="fa-solid fa-right-from-bracket"></i>
     </a>
   </div>

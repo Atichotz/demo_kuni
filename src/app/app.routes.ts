@@ -7,18 +7,26 @@ import { LoginPageComponent } from './pages/login-page/login-page.component';
 import { StaffMainLayoutComponent } from './staff-main-layout/staff-main-layout.component';
 import { WorkflowPageComponent } from './pages/workflow-page/workflow-page.component';
 import { CustomerDetailPageComponent } from './pages/customer-detail-page/customer-detail-page.component';
+import { AuthCallbackComponent } from './pages/auth-callback/auth-callback.component';
+import { authGuard } from './guards/auth.guard';
+import { NewCustomerSuccessPopupComponent } from './popups/new-customer-success-popup/new-customer-success-popup.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: 'login', component: LoginPageComponent },
+  { path: 'auth/callback', component: AuthCallbackComponent },
+  { path: 'tests', component: NewCustomerSuccessPopupComponent },
   {
-    path: '', component: StaffMainLayoutComponent, children: [
+    path: '',
+    component: StaffMainLayoutComponent,
+    canActivate: [authGuard],
+    children: [
       { path: 'workflow', component: WorkflowPageComponent },
       { path: 'dashboard', component: DashboardComponent },
       { path: 'estimate', component: EstimatePageComponent },
       { path: 'battery-guide', component: BatteryGuideComponent },
       { path: 'calculators', component: CalculatorsPageComponent },
-      { path: 'detail/:id', component: CustomerDetailPageComponent }
-    ]
-  }
+      { path: 'detail/:id', component: CustomerDetailPageComponent },
+    ],
+  },
 ];

@@ -239,6 +239,23 @@ h3 {
   letter-spacing: 0.05em;
 }
 
+/* Collapsible content — grid trick allows height: auto transition */
+.collapsible-content {
+  display: grid;
+  grid-template-rows: 1fr;
+  opacity: 1;
+  transition: grid-template-rows 220ms ease, opacity 200ms ease;
+
+  &:not(.expanded) {
+    grid-template-rows: 0fr;
+    opacity: 0;
+  }
+
+  .collapsible-inner {
+    overflow: hidden;
+  }
+}
+
 /* To-Do List */
 .todo-item {
   display: flex;

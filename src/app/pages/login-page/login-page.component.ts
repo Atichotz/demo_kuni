@@ -1,37 +1,52 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-login-page',
   imports: [FormsModule],
   templateUrl: './login-page.component.html',
-  styleUrl: './login-page.component.scss'
+  styleUrl: './login-page.component.scss',
 })
 export class LoginPageComponent {
-  email = '';
+  username = '';
   password = '';
   showPassword = false;
   isLoading = false;
+  isGoogleLoading = false;
   errorMessage = '';
-  currentYear = new Date().getFullYear();
+  googleError = '';
 
-  constructor(private router: Router) {}
+  constructor(private auth: AuthService, private router: Router) {}
 
-  onLogin(): void {
+  async onLogin(): Promise<void> {
     this.errorMessage = '';
-
-    if (!this.email || !this.password) {
-      this.errorMessage = 'Please enter your email and password.';
+    if (!this.username || !this.password) {
+      this.errorMessage = 'Please enter your Username and Password';
       return;
     }
-
     this.isLoading = true;
-
-    // Simulate auth delay — replace with real API call later
-    setTimeout(() => {
-      this.isLoading = false;
+    try {
+      await this.auth.loginWithUsername(this.username, this.password);
       this.router.navigate(['/dashboard']);
-    }, 800);
+    } catch (err: unknown) {
+      this.errorMessage =
+        err instanceof Error ? err.message : 'Login failed. Please try again.';
+    } finally {
+      this.isLoading = false;
+    }
+  }
+
+  async onGoogleLogin(): Promise<void> {
+    this.googleError = '';
+    this.isGoogleLoading = true;
+    try {
+      await this.auth.loginWithGoogle();
+    } catch (err: unknown) {
+      this.googleError =
+        err instanceof Error ? err.message : 'Google login failed';
+      this.isGoogleLoading = false;
+    }
   }
 }

@@ -48,47 +48,86 @@ interface SizeBar {
 })
 export class DashboardComponent {
 
-  todos = signal<TodoItem[]>([
+  techCollapsed = signal(false);
+  adminCollapsed = signal(false);
+
+  techTodos = signal<TodoItem[]>([
     {
       id: 1,
-      title: 'Finalize quote for ABC Corp',
-      details: 'Ensure the new battery pricing is included before sending. They requested the 15kWh option instead of the 10kWh.',
-      meta: 'Due Today • Assigned to Jane',
-      done: false
-    },
-    {
-      id: 2,
       title: 'Follow up on inverter stock',
       details: 'Check with the supplier about the backordered Huawei SUN2000-10KTL units. We need 3 by next week.',
       meta: 'Due Tomorrow • Assigned to Mark',
       done: false
     },
     {
+      id: 2,
+      title: 'Prepare equipment for installation',
+      details: 'Pattaya Branch — 10kW On-Grid system. Verify all panels, mounting hardware, and cabling.',
+      meta: 'Due Today • Assigned to Tech Team',
+      done: false
+    },
+    {
       id: 3,
+      title: 'Complete site survey report: ABC Corp',
+      meta: 'Completed May 2',
+      done: true
+    }
+  ]);
+
+  adminTodos = signal<TodoItem[]>([
+    {
+      id: 101,
+      title: 'Finalize quote for ABC Corp',
+      details: 'Ensure the new battery pricing is included before sending. They requested the 15kWh option instead of the 10kWh.',
+      meta: 'Due Today • Assigned to Jane',
+      done: false
+    },
+    {
+      id: 102,
       title: 'Send introductory email to John Doe',
       meta: 'Completed May 2',
       done: true
     }
   ]);
 
-  toggleTask(id: number): void {
-    this.todos.update(list =>
+  toggleTechTask(id: number): void {
+    this.techTodos.update(list =>
       list.map(t => t.id === id ? { ...t, done: !t.done } : t)
     );
   }
 
-  addTask(input: HTMLInputElement): void {
+  addTechTask(input: HTMLInputElement): void {
     const title = input.value.trim();
     if (!title) return;
-    this.todos.update(list => [
+    this.techTodos.update(list => [
       ...list,
       { id: Date.now(), title, meta: 'Just added', done: false }
     ]);
     input.value = '';
   }
 
-  deleteTask(id: number): void {
-    this.todos.update(list => list.filter(t => t.id !== id));
+  deleteTechTask(id: number): void {
+    this.techTodos.update(list => list.filter(t => t.id !== id));
+  }
+
+  toggleAdminTask(id: number): void {
+    this.adminTodos.update(list =>
+      list.map(t => t.id === id ? { ...t, done: !t.done } : t)
+    );
+  }
+
+  addAdminTask(input: HTMLInputElement): void {
+    const title = input.value.trim();
+    if (!title) return;
+    this.adminTodos.update(list => [
+      ...list,
+      { id: Date.now(), title, meta: 'Just added', done: false }
+    ]);
+    input.value = '';
+  }
+
+  deleteAdminTask(id: number): void {
+    this.adminTodos.update(list => list.filter(t => t.id !== id));
   }
 
   readonly recentQuotes: QuoteRecord[] = [
