@@ -10,12 +10,12 @@ import { CustomerDetailPageComponent } from './pages/customer-detail-page/custom
 import { AuthCallbackComponent } from './pages/auth-callback/auth-callback.component';
 import { authGuard } from './guards/auth.guard';
 import { NewCustomerSuccessPopupComponent } from './popups/new-customer-success-popup/new-customer-success-popup.component';
+import { SettingPageComponent } from './pages/setting-page/setting-page.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: 'login', component: LoginPageComponent },
   { path: 'auth/callback', component: AuthCallbackComponent },
-  { path: 'tests', component: NewCustomerSuccessPopupComponent },
   {
     path: '',
     component: StaffMainLayoutComponent,
@@ -27,6 +27,7 @@ export const routes: Routes = [
       { path: 'battery-guide', component: BatteryGuideComponent },
       { path: 'calculators', component: CalculatorsPageComponent },
       { path: 'detail/:id', component: CustomerDetailPageComponent },
+      { path: 'setting', component: SettingPageComponent },
     ],
   },
 ];

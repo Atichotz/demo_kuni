@@ -1,1 +1,8 @@
+@if (update.updateAvailable()) {
+  <div class="update-banner">
+    <span>ระบบมีเวอร์ชันใหม่แล้ว</span>
+    <button (click)="update.reload()">โหลดหน้าใหม่</button>
+  </div>
+}
+
 <router-outlet />

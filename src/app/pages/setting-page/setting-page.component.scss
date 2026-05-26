@@ -1,0 +1,172 @@
+.settings-page {
+  padding: 24px;
+}
+
+.settings-layout {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  gap: 20px;
+  align-items: start;
+}
+
+// ===== Sidebar =====
+.settings-sidebar {
+  padding: 20px 16px;
+}
+
+.sidebar-heading {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--k-mid-grey);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 12px;
+  padding: 0 8px;
+}
+
+.nav-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: var(--k-transition);
+
+  .nav-icon {
+    width: 20px;
+    text-align: center;
+    font-size: 14px;
+    color: var(--k-mid-grey);
+    flex-shrink: 0;
+  }
+
+  .nav-text {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .nav-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--k-dark-grey);
+    line-height: 1.3;
+  }
+
+  .nav-desc {
+    font-size: 11px;
+    color: var(--k-mid-grey);
+    line-height: 1.3;
+  }
+
+  .nav-arrow {
+    font-size: 10px;
+    color: var(--k-mid-grey);
+    flex-shrink: 0;
+  }
+
+  &:hover {
+    background-color: var(--bg-color);
+  }
+
+  &.active {
+    background-color: #fde8e9;
+
+    .nav-icon { color: var(--k-red); }
+    .nav-title { color: var(--k-red); }
+    .nav-desc  { color: #e57373; }
+    .nav-arrow { color: var(--k-red); }
+  }
+}
+
+// ===== Content =====
+.settings-content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.content-card {
+  padding: 24px;
+}
+
+.content-header {
+  margin-bottom: 24px;
+  border-bottom: 1px solid var(--k-light-grey);
+  padding-bottom: 16px;
+
+  h2 {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--k-dark-grey);
+    margin-bottom: 4px;
+  }
+
+  p {
+    font-size: 13px;
+    color: var(--k-mid-grey);
+  }
+}
+
+// ===== Profile Photo =====
+.profile-photo-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 0;
+}
+
+.avatar-circle {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background-color: var(--k-light-grey);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 4px;
+
+  .avatar-icon {
+    font-size: 42px;
+    color: #b0b0b0;
+  }
+}
+
+.camera-btn {
+  position: absolute;
+  bottom: 2px;
+  right: 2px;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background-color: var(--k-red);
+  border: 2px solid var(--k-white);
+  color: var(--k-white);
+  font-size: 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--k-transition);
+
+  &:hover {
+    background-color: #8c1621;
+  }
+}
+
+.photo-hint {
+  font-size: 11px;
+  color: var(--k-mid-grey);
+  line-height: 1.5;
+}

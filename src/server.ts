@@ -27,6 +27,17 @@ const angularApp = new AngularNodeAppEngine();
  */
 
 /**
+ * Prevent browsers from caching index.html when requested directly.
+ * Hashed JS/CSS assets can still use long-lived cache via express.static below.
+ */
+app.get('/index.html', (_req, res, next) => {
+  res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+  res.setHeader('Pragma', 'no-cache');
+  res.setHeader('Expires', '0');
+  next();
+});
+
+/**
  * Serve static files from /browser
  */
 app.use(
@@ -39,8 +50,12 @@ app.use(
 
 /**
  * Handle all other requests by rendering the Angular application.
+ * Always set no-cache on HTML responses so users get fresh HTML after deploy.
  */
 app.use('/**', (req, res, next) => {
+  res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+  res.setHeader('Pragma', 'no-cache');
+  res.setHeader('Expires', '0');
   angularApp
     .handle(req)
     .then((response) =>

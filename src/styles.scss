@@ -174,8 +174,12 @@ a {
 
 
 .max-w-container {
-  max-width: 1330px;
+  max-width: 1500px;
   margin: 0 auto;
+
+  @media (max-width: 1470px) {
+    max-width: 1300px;
+  }
 }
 
 @media screen and (max-width: 1200px) {

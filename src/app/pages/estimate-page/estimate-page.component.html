@@ -1,332 +1,802 @@
 <div class="max-w-container">
-  <!-- Repeating PDF Header (Only visible on export) -->
-  <div class="print-header">
-    <div style="font-weight: 700; font-size: 18px; color: var(--k-black);">KUNINI <span
-        style="font-weight: 400;">SOLAR</span></div>
-    <div style="font-size: 12px; color: var(--k-dark-grey);">Price Estimation Report</div>
-  </div>
-  <!-- Repeating PDF Footer (Only visible on export) -->
-  <div class="print-footer">
-    <!-- ELECTRICAL & SOLAR EPC CONTRACTORS | -->
-    HUAHIN • PATTAYA • BANGKOK | www.kunini.com
-  </div>
   <!-- Page Header (Hidden on Print) -->
-  <div class="no-print container-content !mb-2 !flex-row justify-between flex-wrap" style="margin-top:1rem;">
-    <h1>Price Estimation Builder</h1>
-    <p-button [routerLink]="['/detail','6']" [rounded]="true" variant="outlined" severity="danger">
-      <i class="fa-solid fa-xmark"></i>
-    </p-button>
-  </div>
-  <div class="container-content">
 
-    <!-- 1. Customer Information -->
-    <div class="card">
-      <div class="card-header">
-        <h2 class="font-bold">1. Customer Information</h2>
+  <div class="estimate-layout" style="margin-top:10rem;">
+    <div class="nav-overlay" [class.visible]="mobileNavOpen" (click)="mobileNavOpen = false"></div>
+    <button class="nav-mobile-toggle" (click)="mobileNavOpen = !mobileNavOpen">
+      <i [ngClass]="mobileNavOpen ? 'fas fa-times' : 'fas fa-bars'"></i>
+    </button>
+    <nav class="section-nav" [class.collapsed]="!navOpen" [class.mobile-open]="mobileNavOpen">
+      <div class="nav-header">
+        <button class="icon-btn nav-toggle" (click)="navOpen = !navOpen" [title]="navOpen ? 'Collapse' : 'Expand'">
+          <i [ngClass]="navOpen ? 'fas fa-chevron-left' : 'fas fa-chevron-right'"></i>
+        </button>
+        <p class="nav-title">Sections</p>
+        <button class="nav-mobile-close icon-btn" (click)="mobileNavOpen = false">
+          <i class="fas fa-times"></i>
+        </button>
       </div>
-      <div class="grid grid-cols-2">
-        <div class="input-group">
-          <span class="input-label">Customer Name / Company</span>
-          <div style="font-size: 14px; font-weight: 700; color: var(--k-black);">John Doe Residence</div>
-        </div>
-        <div class="input-group">
-          <span class="input-label">Contact Reference</span>
-          <div style="font-size: 14px;">+66 81 234 5678 | john.doe&#64;mail.com</div>
-        </div>
-        <div class="input-group full-width">
-          <span class="input-label">Installation Address</span>
-          <div style="font-size: 14px;">123/45 Sukhumvit Road, Nong Prue, Bang Lamung, Pattaya</div>
-        </div>
+      <ul class="nav-list">
+        <li class="nav-item" [class.active]="activeSection === 'sec-1'" (click)="scrollTo('sec-1')">
+          Customer Info
+        </li>
+        <li class="nav-item" [class.active]="activeSection === 'sec-2'" (click)="scrollTo('sec-2')">
+          Electric Bill
+        </li>
+        <!-- nav-subitem example: <li class="nav-subitem" [class.active]="activeSection === 'sec-3'" (click)="scrollTo('sec-3')">Panels</li> -->
+        <li class="nav-item" [class.active]="activeSection === 'sec-3'" (click)="scrollTo('sec-3')">
+          <span class="nav-num">1</span>Panels
+        </li>
+        <li class="nav-item" [class.active]="activeSection === 'sec-4'" (click)="scrollTo('sec-4')">
+          <span class="nav-num">2</span>Inverters
+        </li>
+        <li class="nav-item" [class.active]="activeSection === 'sec-5'" (click)="scrollTo('sec-5')">
+          <span class="nav-num">3</span>Batteries
+        </li>
+        <li class="nav-item" [class.active]="activeSection === 'sec-6'" (click)="scrollTo('sec-6')">
+          <span class="nav-num">4</span>Solar Racking
+        </li>
+        <li class="nav-item" [class.active]="activeSection === 'sec-7'" (click)="scrollTo('sec-7')">
+          <span class="nav-num">5</span>Solar BOS
+        </li>
+        <li class="nav-item" [class.active]="activeSection === 'sec-8'" (click)="scrollTo('sec-8')">
+          <span class="nav-num">6</span>Installation
+        </li>
+        <li class="nav-item" [class.active]="activeSection === 'sec-9'" (click)="scrollTo('sec-9')">
+          <span class="nav-num">7</span>Documentation
+        </li>
+        <li class="nav-item" [class.active]="activeSection === 'sec-10'" (click)="scrollTo('sec-10')">
+          <span class="nav-num">8</span>Summary
+        </li>
+        <li class="nav-item" [class.active]="activeSection === 'sec-11'" (click)="scrollTo('sec-11')">
+          <span class="nav-num">9</span>Energy Output
+        </li>
+        <li class="nav-item" [class.active]="activeSection === 'sec-12'" (click)="scrollTo('sec-12')">
+          <span class="nav-num">10</span>Cash Flow
+        </li>
+        <li class="nav-item" [class.active]="activeSection === 'sec-13'" (click)="scrollTo('sec-13')">
+          <span class="nav-num">11</span>Energy Demand
+        </li>
+      </ul>
+    </nav>
+    <div class="container-content">
+      <div class="flex !mb-2 !flex-row justify-between flex-wrap" >
+        <h1>Price Estimation Builder</h1>
+        <p-button [routerLink]="['/detail','6']" [rounded]="true" variant="outlined" severity="danger">
+          <i class="fa-solid fa-xmark"></i>
+        </p-button>
       </div>
-    </div>
-
-    <!-- 2. Electric Bill -->
-    <div class="card">
-      <div class="card-header">
-        <h2 class="font-bold">2. Electric Bill Details</h2>
-      </div>
-      <div class="grid grid-cols-3">
-        <div class="input-group">
-          <label class="input-label">Electric Bill Name</label>
-          <input type="text" placeholder="Name on bill">
+      <!-- 1. Customer Information -->
+      <div class="card" id="sec-1">
+        <div class="card-header">
+          <h2 class="font-bold">Customer Information</h2>
         </div>
-        <div class="input-group">
-          <label class="input-label">Electric Bill Amount (฿)</label>
-          <input type="text" placeholder="e.g. 5,500">
-        </div>
-        <div class="input-group">
-          <label class="input-label">CA / Ref No. 1</label>
-          <input type="text" placeholder="Account Ref">
-        </div>
-        <div class="input-group">
-          <label class="input-label">Installation No.</label>
-          <input type="text" placeholder="Installation ID">
-        </div>
-        <div class="input-group">
-          <label class="input-label">Electricity Usage Type</label>
-          <p-select [options]="electricityOptions" appendTo="body" [(ngModel)]="selectedElectricityUsageType"
-            optionLabel="label" optionValue="value" [filter]="true" filterBy="label,value" [showClear]="true"
-            placeholder="Select Electricity Usage Type" class="w-full">
-          </p-select>
-        </div>
-        <div class="input-group">
-          <label class="input-label">KWH Consumption / Month</label>
-          <input type="text" placeholder="e.g. 1200">
-        </div>
-
-        <div class="input-group full-width no-print mt-4">
-          <label class="input-label">Attach File</label>
-          <div class="upload-area">
-            + Drag & Drop Electric Bill PDF/Image here
+        <div class="grid grid-cols-2">
+          <div class="input-group">
+            <span class="input-label">Customer Name / Company</span>
+            <div style="font-size: 14px; font-weight: 700; color: var(--k-black);">John Doe Residence</div>
+          </div>
+          <div class="input-group">
+            <span class="input-label">Contact Reference</span>
+            <div style="font-size: 14px;">+66 81 234 5678 | john.doe&#64;mail.com</div>
+          </div>
+          <div class="input-group full-width">
+            <span class="input-label">Installation Address</span>
+            <div style="font-size: 14px;">123/45 Sukhumvit Road, Nong Prue, Bang Lamung, Pattaya</div>
           </div>
         </div>
       </div>
-    </div>
 
-    <!-- 3. System Configuration -->
-    <div class="card">
-      <div class="card-header">
-        <h2 class="font-bold">3. System Configuration</h2>
-      </div>
-
-      <div class="input-group mb-4">
-        <label class="input-label" style="margin-bottom: 8px;">Type of System</label>
-        <div class="toggle-group">
-          <div class="toggle-btn">On-Grid</div>
-          <div class="toggle-btn active">Hybrid</div>
-          <div class="toggle-btn">Off-Grid</div>
+      <!-- 2. Electric Bill -->
+      <div class="card" id="sec-2">
+        <div class="card-header">
+          <h2 class="font-bold">Electric Bill Details</h2>
         </div>
-      </div>
-
-      <div class="grid grid-cols-2" style="margin-top: 24px;">
-        <!-- Panels -->
-        <div>
-          <label class="input-label" style="margin-bottom: 8px; color: var(--k-black);">Solar
-            Panels</label>
-          <div class="repeat-row">
-            <p-select [options]="solarPanelOptions" appendTo="body" [(ngModel)]="selectedSolarPanel" optionLabel="label"
-              optionValue="value" [filter]="true" filterBy="label,value" [showClear]="true"
-              placeholder="Select a Solar Panel" class="w-full">
+        <div class="grid grid-cols-3">
+          <div class="input-group">
+            <label class="input-label">Electric Bill Name</label>
+            <input type="text" placeholder="Name on bill">
+          </div>
+          <div class="input-group">
+            <label class="input-label">Electric Bill Amount (฿)</label>
+            <input type="text" placeholder="e.g. 5,500">
+          </div>
+          <div class="input-group">
+            <label class="input-label">CA / Ref No. 1</label>
+            <input type="text" placeholder="Account Ref">
+          </div>
+          <div class="input-group">
+            <label class="input-label">Installation No.</label>
+            <input type="text" placeholder="Installation ID">
+          </div>
+          <div class="input-group">
+            <label class="input-label">Electricity Usage Type</label>
+            <p-select [options]="electricityOptions" appendTo="body" [(ngModel)]="selectedElectricityUsageType"
+              optionLabel="label" optionValue="value" [filter]="true" filterBy="label,value" [showClear]="true"
+              placeholder="Select Electricity Usage Type" class="w-full">
             </p-select>
-            <input type="number" placeholder="Qty">
-            <button class="icon-btn no-print" title="Remove">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                stroke-linecap="round" stroke-linejoin="round">
-                <polyline points="3 6 5 6 21 6"></polyline>
-                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
-                </path>
-              </svg>
-            </button>
           </div>
-          <button class="btn-text no-print">+ Add another type of panel</button>
-        </div>
-
-        <!-- Inverters -->
-        <div>
-          <label class="input-label" style="margin-bottom: 8px; color: var(--k-black);">Inverters</label>
-          <div class="repeat-row">
-            <p-select [options]="inverterOptions" appendTo="body" [(ngModel)]="selectedInverter" optionLabel="label"
-              optionValue="value" [filter]="true" filterBy="label,value" [showClear]="true"
-              placeholder="Select an Inverter" class="w-full">
-            </p-select>
-            <input type="number" placeholder="Qty">
-            <button class="icon-btn no-print" title="Remove">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                stroke-linecap="round" stroke-linejoin="round">
-                <polyline points="3 6 5 6 21 6"></polyline>
-                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
-                </path>
-              </svg>
-            </button>
+          <div class="input-group">
+            <label class="input-label">KWH Consumption / Month</label>
+            <input type="text" placeholder="e.g. 1200">
           </div>
-          <button class="btn-text no-print">+ Add another type of inverter</button>
-        </div>
 
-        <!-- Batteries -->
-        <div style="margin-top: 16px;">
-          <label class="input-label" style="margin-bottom: 8px; color: var(--k-black);">Battery
-            Storage</label>
-          <div class="repeat-row">
-            <p-select [options]="batteryOptions" appendTo="body" [(ngModel)]="selectedBattery" optionLabel="label"
-              optionValue="value" [filter]="true" filterBy="label,value" [showClear]="true"
-              placeholder="Select a Battery" class="w-full">
-            </p-select>
-            <input type="number" placeholder="Qty">
-            <button class="icon-btn no-print" title="Remove">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                stroke-linecap="round" stroke-linejoin="round">
-                <polyline points="3 6 5 6 21 6"></polyline>
-                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
-                </path>
-              </svg>
-            </button>
+          <div class="input-group full-width no-print mt-4">
+            <label class="input-label">Attach File</label>
+            <div class="upload-area">
+              + Drag & Drop Electric Bill PDF/Image here
+            </div>
           </div>
-          <button class="btn-text no-print">+ Add another battery</button>
-        </div>
-
-        <!-- Other Products -->
-        <div style="margin-top: 16px;">
-          <label class="input-label" style="margin-bottom: 8px; color: var(--k-black);">Other
-            Products</label>
-          <p-select [options]="otherOptions" appendTo="body" [(ngModel)]="other" optionLabel="label" optionValue="value"
-            [filter]="true" filterBy="label,value" [showClear]="true" placeholder="Select Other Products"
-            class="w-full">
-          </p-select>
-          <!-- <select style="width: calc(100% - 52px);">
-            <option>None</option>
-            <option>Optimizers</option>
-            <option>Smart Meter</option>
-            <option>EV Charger Integration</option>
-          </select> -->
-        </div>
-      </div>
-    </div>
-
-    <!-- ================= PAGE 2 ================= -->
-    <div class="page-break"></div>
-
-    <!-- 4. System Summary -->
-    <div class="card">
-      <div class="card-header">
-        <h2 class="font-bold">4. System Summary</h2>
-      </div>
-      <div class="grid grid-cols-4">
-        <div class="metric-box full-width" style="background: var(--k-dark-grey); color: white;">
-          <div class="metric-lbl" style="color: var(--k-light-grey);">Estimated Total Investment</div>
-          <div class="metric-val" style="color: white; font-size: 20px;">฿ 350,000.00</div>
-        </div>
-
-        <div class="metric-box">
-          <div class="metric-lbl">DC Capacity</div>
-          <div class="metric-val" style="color: var(--k-black);">10.5 kWp</div>
-        </div>
-        <div class="metric-box">
-          <div class="metric-lbl">Total Inverter</div>
-          <div class="metric-val" style="color: var(--k-black);">10 kW</div>
-        </div>
-        <div class="metric-box">
-          <div class="metric-lbl">Battery Storage</div>
-          <div class="metric-val" style="color: var(--k-black);">10 kWh</div>
-        </div>
-        <div class="metric-box">
-          <div class="metric-lbl">CO2 Offset / Yr</div>
-          <div class="metric-val" style="color: var(--k-accent-green);">7.2 Tons</div>
-        </div>
-
-        <div class="metric-box">
-          <div class="metric-lbl">Payback Period (ROI)</div>
-          <div class="metric-val" style="color: var(--k-black);">4.5 Years</div>
-        </div>
-        <div class="metric-box">
-          <div class="metric-lbl">Annual Production</div>
-          <div class="metric-val" style="color: var(--k-black);">14,500 kWh</div>
-        </div>
-        <div class="metric-box" style="border-color: var(--k-red);">
-          <div class="metric-lbl">Est. Monthly Savings</div>
-          <div class="metric-val">฿ 6,500</div>
-        </div>
-        <div class="metric-box" style="border-color: var(--k-red);">
-          <div class="metric-lbl">Annual Savings</div>
-          <div class="metric-val">฿ 78,000</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- ================= PAGE 3 ================= -->
-    <div class="page-break"></div>
-
-    <!-- 5. Monthly Energy Output -->
-    <div class="card">
-      <div class="card-header">
-        <h2 class="font-bold">5. Monthly Energy Output</h2>
-      </div>
-
-      <!-- Graph Placeholder -->
-      <div class="chart-placeholder">
-        [ Bar Chart: Monthly Production vs Monthly Savings ]
-      </div>
-
-      <div class="grid grid-cols-2">
-        <div class="metric-box">
-          <div class="metric-lbl">Average Monthly Production</div>
-          <div class="metric-val" style="color: var(--k-black);">1,208 kWh</div>
-        </div>
-        <div class="metric-box" style="border-color: var(--k-red);">
-          <div class="metric-lbl">Average Monthly Savings</div>
-          <div class="metric-val">฿ 6,500</div>
         </div>
       </div>
 
-      <div
-        style="margin-top: 20px; font-size: 12px; color: var(--k-mid-grey); background: var(--bg-color); padding: 12px; border-radius: var(--radius-sm);">
-        <strong>Calculation Formula Used:</strong> <br>
-        Daily kW Production = System Size (kW) × 4.5 hrs (Peak Sunlight) × 85% (System Efficiency)
-      </div>
-    </div>
-
-    <!-- 6. Cash Flow Analysis -->
-    <div class="card">
-      <div class="card-header">
-        <h2 class="font-bold">6. Cash Flow Analysis</h2>
-      </div>
-
-      <div class="chart-placeholder">
-        [ Line Chart: Cumulative Savings vs Total Investment over 10 Years ]
-      </div>
-
-      <div class="grid grid-cols-4">
-        <div class="metric-box">
-          <div class="metric-lbl">Total Investment</div>
-          <div class="metric-val" style="color: var(--k-black);">฿ 350k</div>
+      <!-- 3.1 Panels -->
+      <div class="card panels-card" id="sec-3">
+        <div class="card-header">
+          <h2 class="font-bold">1. Panels</h2>
         </div>
-        <div class="metric-box" style="border-color: var(--k-red);">
-          <div class="metric-lbl">Year 1 Savings</div>
-          <div class="metric-val" style="color: var(--k-red);">฿ 78k</div>
-        </div>
-        <div class="metric-box" style="border-color: var(--k-accent-green);">
-          <div class="metric-lbl">5 Year Savings</div>
-          <div class="metric-val" style="color: var(--k-accent-green);">฿ 390k</div>
-        </div>
-        <div class="metric-box" style="border-color: var(--k-accent-green);">
-          <div class="metric-lbl">10 Year Savings</div>
-          <div class="metric-val" style="color: var(--k-accent-green);">฿ 780k</div>
+        <div class="table-scroll-wrap">
+          <table class="config-table">
+            <thead>
+              <tr>
+                <th>Brand</th>
+                <th></th>
+                <th>kW</th>
+                <th>Cost Price</th>
+                <th>Price Markup</th>
+                <th>Profit</th>
+                <th>Quantity</th>
+                <th>Total</th>
+                <th>Total kW</th>
+                <th class="no-print"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <p-select [options]="solarPanelOptions" appendTo="body" [(ngModel)]="selectedSolarPanel"
+                    optionLabel="label" optionValue="value" [filter]="true" filterBy="label" [showClear]="true"
+                    placeholder="Select Brand" class="w-full">
+                  </p-select>
+                </td>
+                <td>
+                  <p-select [options]="panelTypeOptions" appendTo="body" [(ngModel)]="selectedPanelType"
+                    optionLabel="label" optionValue="value" [showClear]="true" placeholder="Select Type" class="w-full">
+                  </p-select>
+                </td>
+                <td class="cell-auto">—</td>
+                <td class="cell-auto">—</td>
+                <td class="cell-auto">—</td>
+                <td class="cell-auto">—</td>
+                <td><input type="number" placeholder="Qty"></td>
+                <td class="cell-auto">—</td>
+                <td class="cell-auto">—</td>
+                <td class="no-print">
+                  <button class="icon-btn" title="Remove">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                      stroke-linecap="round" stroke-linejoin="round">
+                      <polyline points="3 6 5 6 21 6"></polyline>
+                      <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
+                      </path>
+                    </svg>
+                  </button>
+                </td>
+              </tr>
+              <tr class="no-print">
+                <td colspan="10" class="add-row-cell">
+                  <button class="k-btn k-btn-text">+ Add different panel</button>
+                </td>
+              </tr>
+              <tr class="accessories-row">
+                <td>
+                  <p-select [options]="panelAccessoriesOptions" appendTo="body" [(ngModel)]="selectedPanelAccessory"
+                    optionLabel="label" optionValue="value" [showClear]="true" placeholder="Add panel accessories"
+                    class="w-full">
+                  </p-select>
+                </td>
+                <td><span class="desc-lbl">Description</span></td>
+                <td class="cell-dash">—</td>
+                <td class="cell-auto">—</td>
+                <td class="cell-auto">—</td>
+                <td></td>
+                <td><input type="text" placeholder="Qty"></td>
+                <td class="cell-auto">—</td>
+                <td class="cell-dash">—</td>
+                <td class="no-print"></td>
+              </tr>
+            </tbody>
+            <tfoot>
+              <tr class="config-total-row">
+                <td colspan="4"></td>
+                <td colspan="2" class="section-total-name">Section 1.1: Panels</td>
+                <td>Total</td>
+                <td class="total-val">—</td>
+                <td class="total-val">—</td>
+                <td class="no-print"></td>
+              </tr>
+            </tfoot>
+          </table>
         </div>
       </div>
-    </div>
 
-    <!-- ================= PAGE 4 ================= -->
-    <div class="page-break"></div>
-    <!-- 7. Energy Demand Analysis -->
-    <div class="card">
-      <div class="card-header">
-        <h2 class="font-bold">7. Energy Demand Analysis</h2>
+      <!-- 3.2 Inverters -->
+      <div class="card inverters-card" id="sec-4">
+        <div class="card-header">
+          <h2 class="font-bold">2. Inverters</h2>
+        </div>
+        <div class="table-scroll-wrap">
+          <table class="config-table">
+            <thead>
+              <tr>
+                <th>Brand</th>
+                <th>Phase</th>
+                <th>kW</th>
+                <th>Cost Price</th>
+                <th>Price Markup</th>
+                <th>Profit</th>
+                <th>Quantity</th>
+                <th>Total</th>
+                <th>Total kW</th>
+                <th class="no-print"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <p-select [options]="inverterOptions" appendTo="body" [(ngModel)]="selectedInverter"
+                    optionLabel="label" optionValue="value" [filter]="true" filterBy="label" [showClear]="true"
+                    placeholder="Select Brand" class="w-full">
+                  </p-select>
+                </td>
+                <td>
+                  <p-select [options]="phaseOptions" appendTo="body" [(ngModel)]="selectedPhase" optionLabel="label"
+                    optionValue="value" [showClear]="true" placeholder="Phase" class="w-full">
+                  </p-select>
+                </td>
+                <td>
+                  <p-select [options]="inverterKwOptions" appendTo="body" [(ngModel)]="selectedInverterKw"
+                    optionLabel="label" optionValue="value" [showClear]="true" placeholder="kW" class="w-full">
+                  </p-select>
+                </td>
+                <td class="cell-auto">—</td>
+                <td class="cell-auto">—</td>
+                <td class="cell-auto">—</td>
+                <td><input type="number" placeholder="Qty"></td>
+                <td class="cell-auto">—</td>
+                <td class="cell-auto">—</td>
+                <td class="no-print">
+                  <button class="icon-btn" title="Remove">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                      stroke-linecap="round" stroke-linejoin="round">
+                      <polyline points="3 6 5 6 21 6"></polyline>
+                      <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
+                      </path>
+                    </svg>
+                  </button>
+                </td>
+              </tr>
+              <tr class="no-print">
+                <td colspan="10" class="add-row-cell">
+                  <button class="k-btn k-btn-text">+ Add different Inverter</button>
+                </td>
+              </tr>
+              <tr class="accessories-row">
+                <td>
+                  <p-select [options]="inverterAccessoriesOptions" appendTo="body"
+                    [(ngModel)]="selectedInverterAccessory" optionLabel="label" optionValue="value" [showClear]="true"
+                    placeholder="Add inverter accessories" class="w-full">
+                  </p-select>
+                </td>
+                <td><span class="desc-lbl">Description</span></td>
+                <td class="cell-dash">—</td>
+                <td class="cell-auto">—</td>
+                <td class="cell-auto">—</td>
+                <td></td>
+                <td><input type="text" placeholder="Qty"></td>
+                <td class="cell-auto">—</td>
+                <td class="cell-dash">—</td>
+                <td class="no-print"></td>
+              </tr>
+            </tbody>
+            <tfoot>
+              <tr class="config-total-row">
+                <td colspan="4"></td>
+                <td colspan="2" class="section-total-name">Section 1.2: Inverters</td>
+                <td>Total</td>
+                <td class="total-val">—</td>
+                <td class="total-val">—</td>
+                <td class="no-print"></td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
       </div>
 
-      <div class="chart-placeholder">
-        [ Area Chart: 24h Peak Demand Profile (Before vs After Solar) ]
+      <!-- 3.3 Batteries -->
+      <div class="card batteries-card" id="sec-5">
+        <div class="card-header">
+          <h2 class="font-bold">3. Batteries</h2>
+        </div>
+        <div class="table-scroll-wrap">
+          <table class="config-table">
+            <thead>
+              <tr>
+                <th>Brand</th>
+                <th>Description</th>
+                <th>kW</th>
+                <th>Cost Price</th>
+                <th>Price Markup</th>
+                <th>Profit</th>
+                <th>Quantity</th>
+                <th>Total</th>
+                <th>Total kW</th>
+                <th class="no-print"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <p-select [options]="batteryOptions" appendTo="body" [(ngModel)]="selectedBattery" optionLabel="label"
+                    optionValue="value" [filter]="true" filterBy="label" [showClear]="true" placeholder="Select Brand"
+                    class="w-full">
+                  </p-select>
+                </td>
+                <td></td>
+                <td>
+                  <p-select [options]="batteryKwOptions" appendTo="body" [(ngModel)]="selectedBatteryKw"
+                    optionLabel="label" optionValue="value" [showClear]="true" placeholder="kWh" class="w-full">
+                  </p-select>
+                </td>
+                <td class="cell-auto">—</td>
+                <td class="cell-auto">—</td>
+                <td class="cell-auto">—</td>
+                <td><input type="number" placeholder="Qty"></td>
+                <td class="cell-auto">—</td>
+                <td class="cell-auto">—</td>
+                <td class="no-print">
+                  <button class="icon-btn" title="Remove">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                      stroke-linecap="round" stroke-linejoin="round">
+                      <polyline points="3 6 5 6 21 6"></polyline>
+                      <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
+                      </path>
+                    </svg>
+                  </button>
+                </td>
+              </tr>
+              <tr class="no-print">
+                <td colspan="10" class="add-row-cell">
+                  <button class="k-btn k-btn-text">+ Add different Batteries</button>
+                </td>
+              </tr>
+              <tr class="accessories-row">
+                <td>
+                  <p-select [options]="batteryAccessoriesOptions" appendTo="body" [(ngModel)]="selectedBatteryAccessory"
+                    optionLabel="label" optionValue="value" [showClear]="true" placeholder="Add battery accessories"
+                    class="w-full">
+                  </p-select>
+                </td>
+                <td><span class="desc-lbl">Description</span></td>
+                <td class="cell-dash">—</td>
+                <td class="cell-auto">—</td>
+                <td class="cell-auto">—</td>
+                <td></td>
+                <td><input type="text" placeholder="Qty"></td>
+                <td class="cell-auto">—</td>
+                <td class="cell-dash">—</td>
+                <td class="no-print"></td>
+              </tr>
+            </tbody>
+            <tfoot>
+              <tr class="config-total-row">
+                <td colspan="4"></td>
+                <td colspan="2" class="section-total-name">Section 1.3: Batteries</td>
+                <td>Total</td>
+                <td class="total-val">—</td>
+                <td class="total-val">—</td>
+                <td class="no-print"></td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
       </div>
 
-      <div class="grid grid-cols-3">
-        <div class="metric-box">
-          <div class="metric-lbl">Peak Demand (Before Solar)</div>
-          <div class="metric-val" style="color: var(--k-dark-grey);">8.5 kW</div>
+      <!-- 3.4 Solar Racking -->
+      <div class="card racking-card" id="sec-6">
+        <div class="card-header">
+          <h2 class="font-bold">4. Solar Racking</h2>
         </div>
-        <div class="metric-box">
-          <div class="metric-lbl">Peak Demand (After Solar)</div>
-          <div class="metric-val" style="color: var(--k-black);">2.1 kW</div>
-        </div>
-        <div class="metric-box" style="border-color: var(--k-red);">
-          <div class="metric-lbl">Demand Reduction</div>
-          <div class="metric-val">75.2%</div>
+        <div class="table-scroll-wrap">
+          <table class="config-table">
+            <thead>
+              <tr>
+                <th>Type</th>
+                <th>Total Cost</th>
+                <th>kW</th>
+                <th>Cost / W</th>
+                <th>Price Markup</th>
+                <th>Profit</th>
+                <th>Units</th>
+                <th>Total</th>
+                <th class="no-print"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <p-select [options]="rackingOptions" appendTo="body" [(ngModel)]="selectedRacking"
+                    optionLabel="label" optionValue="value" [filter]="true" filterBy="label" [showClear]="true"
+                    placeholder="Select Type" class="w-full">
+                  </p-select>
+                </td>
+                <td class="cell-auto">—</td>
+                <td class="cell-auto"><span class="desc-lbl">.= PV W</span></td>
+                <td class="cell-auto">—</td>
+                <td><input type="number" placeholder="Markup"></td>
+                <td class="cell-auto">—</td>
+                <td><input type="number" placeholder="Units"></td>
+                <td class="cell-auto">—</td>
+                <td class="no-print">
+                  <button class="icon-btn" title="Remove">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                      stroke-linecap="round" stroke-linejoin="round">
+                      <polyline points="3 6 5 6 21 6"></polyline>
+                      <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
+                      </path>
+                    </svg>
+                  </button>
+                </td>
+              </tr>
+              <tr class="no-print">
+                <td colspan="9" class="add-row-cell">
+                  <button class="k-btn k-btn-text">+ Add racking type</button>
+                </td>
+              </tr>
+            </tbody>
+            <tfoot>
+              <tr class="config-total-row">
+                <td colspan="4"></td>
+                <td colspan="2" class="section-total-name">Section 1.4: Solar Racking</td>
+                <td>Total</td>
+                <td class="total-val">—</td>
+                <td class="no-print"></td>
+              </tr>
+            </tfoot>
+          </table>
         </div>
       </div>
-    </div>
 
-    <!-- Bottom Actions (Hidden on Print) -->
-    <div class="no-print"
-      style="display: flex; justify-content: flex-end; gap: 12px; margin-bottom: 16px;">
-      <button class="k-btn k-btn-outline" [routerLink]="['/detail',7]">Save Draft</button>
-      <button class="k-btn k-btn-primary">Export to PDF</button>
+      <!-- 3.5 Solar BOS -->
+      <div class="card bos-card" id="sec-7">
+        <div class="card-header">
+          <h2 class="font-bold">5. Solar BOS</h2>
+        </div>
+        <div class="table-scroll-wrap">
+          <table class="config-table">
+            <thead>
+              <tr>
+                <th>Type</th>
+                <th>Description</th>
+                <th>Total Cost</th>
+                <th>Cost / W</th>
+                <th>Price Markup</th>
+                <th>Profit</th>
+                <th>Units</th>
+                <th>Total</th>
+                <th class="no-print"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <p-select [options]="bosOptions" appendTo="body" [(ngModel)]="selectedBOS"
+                    optionLabel="label" optionValue="value" [filter]="true" filterBy="label" [showClear]="true"
+                    placeholder="Select Type" class="w-full">
+                  </p-select>
+                </td>
+                <td><input type="text" placeholder="Description"></td>
+                <td class="cell-auto">—</td>
+                <td class="cell-auto">—<br><span class="desc-lbl">.= Total / W</span></td>
+                <td class="cell-auto">—</td>
+                <td class="cell-auto">—</td>
+                <td><input type="text" placeholder="Units"></td>
+                <td class="cell-auto">—</td>
+                <td class="no-print">
+                  <button class="icon-btn" title="Remove">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                      stroke-linecap="round" stroke-linejoin="round">
+                      <polyline points="3 6 5 6 21 6"></polyline>
+                      <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
+                      </path>
+                    </svg>
+                  </button>
+                </td>
+              </tr>
+              <tr class="no-print">
+                <td colspan="9" class="add-row-cell">
+                  <button class="k-btn k-btn-text">+ Add BOS item</button>
+                </td>
+              </tr>
+            </tbody>
+            <tfoot>
+              <tr class="config-total-row">
+                <td colspan="4"></td>
+                <td colspan="2" class="section-total-name">Section 1.5: Solar BOS</td>
+                <td>Total</td>
+                <td class="total-val">—</td>
+                <td class="no-print"></td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+
+      <!-- 3.6 Installation -->
+      <div class="card installation-card" id="sec-8">
+        <div class="card-header">
+          <h2 class="font-bold">6. Installation</h2>
+        </div>
+        <div class="table-scroll-wrap">
+          <table class="config-table">
+            <thead>
+              <tr>
+                <th>Type</th>
+                <th>Description</th>
+                <th>Total Cost</th>
+                <th>Cost / W</th>
+                <th>Price Markup</th>
+                <th>Profit</th>
+                <th>Units</th>
+                <th>Total</th>
+                <th class="no-print"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <p-select [options]="installationTypeOptions" appendTo="body" [(ngModel)]="selectedInstallationType"
+                    optionLabel="label" optionValue="value" [filter]="true" filterBy="label" [showClear]="true"
+                    placeholder="Select Type" class="w-full">
+                  </p-select>
+                </td>
+                <td><input type="text" placeholder="Description"></td>
+                <td class="cell-auto">—<br><span class="desc-lbl">.= Total / W</span></td>
+                <td class="cell-auto">—</td>
+                <td class="cell-auto">—</td>
+                <td class="cell-auto">—</td>
+                <td><input type="text" placeholder="Units"></td>
+                <td class="cell-auto">—</td>
+                <td class="no-print">
+                  <button class="icon-btn" title="Remove">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                      stroke-linecap="round" stroke-linejoin="round">
+                      <polyline points="3 6 5 6 21 6"></polyline>
+                      <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
+                      </path>
+                    </svg>
+                  </button>
+                </td>
+              </tr>
+              <tr class="accessories-row">
+                <td><span class="desc-lbl">Additional Costs</span></td>
+                <td><input type="text" placeholder="Description"></td>
+                <td class="cell-dash">—</td>
+                <td class="cell-auto">—</td>
+                <td class="cell-auto">—</td>
+                <td></td>
+                <td><input type="text" placeholder="Amount (฿)"></td>
+                <td class="cell-auto">—</td>
+                <td class="no-print"></td>
+              </tr>
+              <tr class="no-print">
+                <td colspan="9" class="add-row-cell">
+                  <button class="k-btn k-btn-text">+ Add installation item</button>
+                </td>
+              </tr>
+            </tbody>
+            <tfoot>
+              <tr class="config-total-row">
+                <td colspan="4"></td>
+                <td colspan="2" class="section-total-name">Section 1.6: Installation</td>
+                <td>Total</td>
+                <td class="total-val">—</td>
+                <td class="no-print"></td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+
+      <!-- 3.7 Documentation -->
+      <div class="card documentation-card" id="sec-9">
+        <div class="card-header">
+          <h2 class="font-bold">7. Documentation</h2>
+        </div>
+        <div class="table-scroll-wrap">
+          <table class="config-table">
+            <thead>
+              <tr>
+                <th colspan="4">Type</th>
+                <th colspan="2">Unit Rate</th>
+                <th>Quantity</th>
+                <th>Total</th>
+                <th class="no-print"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td colspan="4">PEA / MEA Registration (Personal)</td>
+                <td colspan="2" style="text-align: right; font-weight: 600; color: var(--k-dark-grey);">฿ 15,000.00</td>
+                <td><input type="number" value="1" placeholder="Qty"></td>
+                <td class="cell-auto">฿ 15,000.00</td>
+                <td class="no-print"></td>
+              </tr>
+              <tr>
+                <td colspan="4">PEA / MEA FIT</td>
+                <td colspan="2" class="cell-dash">฿ —</td>
+                <td><input type="number" value="1" placeholder="Qty"></td>
+                <td class="cell-auto">฿ —</td>
+                <td class="no-print"></td>
+              </tr>
+            </tbody>
+            <tfoot>
+              <tr class="config-total-row">
+                <td colspan="4"></td>
+                <td colspan="2" class="section-total-name">Section 1.7: Documentation</td>
+                <td>Total</td>
+                <td class="total-val">฿ 15,000.00</td>
+                <td class="no-print"></td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+
+      <!-- ================= PAGE 2 ================= -->
+      <div class="page-break"></div>
+
+      <!-- 4. System Summary -->
+      <div class="card" id="sec-10">
+        <div class="card-header">
+          <h2 class="font-bold">8. System Summary</h2>
+        </div>
+        <div class="grid grid-cols-4">
+          <div class="metric-box full-width" style="background: var(--k-dark-grey); color: white;">
+            <div class="metric-lbl" style="color: var(--k-light-grey);">Estimated Total Investment</div>
+            <div class="metric-val" style="color: white; font-size: 20px;">฿ 350,000.00</div>
+          </div>
+
+          <div class="metric-box">
+            <div class="metric-lbl">DC Capacity</div>
+            <div class="metric-val" style="color: var(--k-black);">10.5 kWp</div>
+          </div>
+          <div class="metric-box">
+            <div class="metric-lbl">Total Inverter</div>
+            <div class="metric-val" style="color: var(--k-black);">10 kW</div>
+          </div>
+          <div class="metric-box">
+            <div class="metric-lbl">Battery Storage</div>
+            <div class="metric-val" style="color: var(--k-black);">10 kWh</div>
+          </div>
+          <div class="metric-box">
+            <div class="metric-lbl">CO2 Offset / Yr</div>
+            <div class="metric-val" style="color: var(--k-accent-green);">7.2 Tons</div>
+          </div>
+
+          <div class="metric-box">
+            <div class="metric-lbl">Payback Period (ROI)</div>
+            <div class="metric-val" style="color: var(--k-black);">4.5 Years</div>
+          </div>
+          <div class="metric-box">
+            <div class="metric-lbl">Annual Production</div>
+            <div class="metric-val" style="color: var(--k-black);">14,500 kWh</div>
+          </div>
+          <div class="metric-box" style="border-color: var(--k-red);">
+            <div class="metric-lbl">Est. Monthly Savings</div>
+            <div class="metric-val">฿ 6,500</div>
+          </div>
+          <div class="metric-box" style="border-color: var(--k-red);">
+            <div class="metric-lbl">Annual Savings</div>
+            <div class="metric-val">฿ 78,000</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= PAGE 3 ================= -->
+      <div class="page-break"></div>
+
+      <!-- 9. Monthly Energy Output -->
+      <div class="card" id="sec-11">
+        <div class="card-header">
+          <h2 class="font-bold">9. Monthly Energy Output</h2>
+        </div>
+
+        <!-- Graph Placeholder -->
+        <div class="chart-placeholder">
+          [ Bar Chart: Monthly Production vs Monthly Savings ]
+        </div>
+
+        <div class="grid grid-cols-2">
+          <div class="metric-box">
+            <div class="metric-lbl">Average Monthly Production</div>
+            <div class="metric-val" style="color: var(--k-black);">1,208 kWh</div>
+          </div>
+          <div class="metric-box" style="border-color: var(--k-red);">
+            <div class="metric-lbl">Average Monthly Savings</div>
+            <div class="metric-val">฿ 6,500</div>
+          </div>
+        </div>
+
+        <div
+          style="margin-top: 20px; font-size: 12px; color: var(--k-mid-grey); background: var(--bg-color); padding: 12px; border-radius: var(--radius-sm);">
+          <strong>Calculation Formula Used:</strong> <br>
+          Daily kW Production = System Size (kW) × 4.5 hrs (Peak Sunlight) × 85% (System Efficiency)
+        </div>
+      </div>
+
+      <!-- 6. Cash Flow Analysis -->
+      <div class="card" id="sec-12">
+        <div class="card-header">
+          <h2 class="font-bold">10. Cash Flow Analysis</h2>
+        </div>
+
+        <div class="chart-placeholder">
+          [ Line Chart: Cumulative Savings vs Total Investment over 10 Years ]
+        </div>
+
+        <div class="grid grid-cols-4">
+          <div class="metric-box">
+            <div class="metric-lbl">Total Investment</div>
+            <div class="metric-val" style="color: var(--k-black);">฿ 350k</div>
+          </div>
+          <div class="metric-box" style="border-color: var(--k-red);">
+            <div class="metric-lbl">Year 1 Savings</div>
+            <div class="metric-val" style="color: var(--k-red);">฿ 78k</div>
+          </div>
+          <div class="metric-box" style="border-color: var(--k-accent-green);">
+            <div class="metric-lbl">5 Year Savings</div>
+            <div class="metric-val" style="color: var(--k-accent-green);">฿ 390k</div>
+          </div>
+          <div class="metric-box" style="border-color: var(--k-accent-green);">
+            <div class="metric-lbl">10 Year Savings</div>
+            <div class="metric-val" style="color: var(--k-accent-green);">฿ 780k</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= PAGE 4 ================= -->
+      <div class="page-break"></div>
+      <!-- 11. Energy Demand Analysis -->
+      <div class="card" id="sec-13">
+        <div class="card-header">
+          <h2 class="font-bold">11. Energy Demand Analysis</h2>
+        </div>
+
+        <div class="chart-placeholder">
+          [ Area Chart: 24h Peak Demand Profile (Before vs After Solar) ]
+        </div>
+
+        <div class="grid grid-cols-3">
+          <div class="metric-box">
+            <div class="metric-lbl">Peak Demand (Before Solar)</div>
+            <div class="metric-val" style="color: var(--k-dark-grey);">8.5 kW</div>
+          </div>
+          <div class="metric-box">
+            <div class="metric-lbl">Peak Demand (After Solar)</div>
+            <div class="metric-val" style="color: var(--k-black);">2.1 kW</div>
+          </div>
+          <div class="metric-box" style="border-color: var(--k-red);">
+            <div class="metric-lbl">Demand Reduction</div>
+            <div class="metric-val">75.2%</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bottom Actions (Hidden on Print) -->
+      <div class="no-print" style="display: flex; justify-content: flex-end; gap: 12px; margin-bottom: 16px;">
+        <button class="k-btn k-btn-outline" [routerLink]="['/detail',7]">Save Draft</button>
+        <button class="k-btn k-btn-primary">Export to PDF</button>
+      </div>
     </div>
   </div>
 </div>
