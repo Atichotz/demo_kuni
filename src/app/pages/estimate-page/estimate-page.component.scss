@@ -55,8 +55,10 @@ h1 {
   overflow: hidden;
   transition: width 0.25s ease;
   margin-top: 4.1rem;
+
   &.collapsed {
     width: 34px;
+
     .nav-title,
     .nav-list {
       opacity: 0;
@@ -168,6 +170,7 @@ h1 {
 
 .nav-toggle {
   flex-shrink: 0;
+
   @media (max-width: 768px) {
     display: none;
   }
@@ -260,7 +263,7 @@ h1 {
 .container-content {
   flex: 1;
   min-width: 0;
-  padding: 0 24px;
+  padding: 24px;
   margin: 0;
   display: flex;
   flex-direction: column;
@@ -386,6 +389,10 @@ textarea {
   .cell-dash {
     text-align: center;
     color: var(--k-mid-grey);
+  }
+
+  .col-qty {
+    width: 10%;
   }
 
   .add-row-cell {

@@ -3,115 +3,35 @@
 
     <!-- ===== Sidebar ===== -->
     <aside class="card settings-sidebar">
-      <h3 class="sidebar-heading">หมวดหมู่การตั้งค่า</h3>
+      <h3 class="sidebar-heading">Settings</h3>
       <ul class="nav-list">
 
-        <li class="nav-item active">
+        <li class="nav-item" [class.active]="activeSection() === 'account'" (click)="activeSection.set('account')">
           <span class="nav-icon"><i class="fas fa-user"></i></span>
           <span class="nav-text">
-            <span class="nav-title">ข้อมูลส่วนตัว</span>
-            <span class="nav-desc">จัดการข้อมูลโปรไฟล์ของคุณ</span>
+            <span class="nav-title">Account</span>
+            <span class="nav-desc">Manage your profile</span>
           </span>
           <i class="fas fa-chevron-right nav-arrow"></i>
         </li>
 
-        <li class="nav-item">
-          <span class="nav-icon"><i class="fas fa-users"></i></span>
+        <li class="nav-item" [class.active]="activeSection() === 'products'" (click)="activeSection.set('products')">
+          <span class="nav-icon"><i class="fa-solid fa-boxes-packing"></i></span>
           <span class="nav-text">
-            <span class="nav-title">บัญชีผู้ใช้</span>
-            <span class="nav-desc">จัดการบัญชีผู้ใช้และสิทธิ์</span>
+            <span class="nav-title">Products</span>
+            <span class="nav-desc">Manage data and pricing</span>
           </span>
           <i class="fas fa-chevron-right nav-arrow"></i>
         </li>
-
-        <li class="nav-item">
-          <span class="nav-icon"><i class="fas fa-bell"></i></span>
-          <span class="nav-text">
-            <span class="nav-title">การแจ้งเตือน</span>
-            <span class="nav-desc">ตั้งค่าการแจ้งเตือนและช่องทาง</span>
-          </span>
-          <i class="fas fa-chevron-right nav-arrow"></i>
-        </li>
-
-        <li class="nav-item">
-          <span class="nav-icon"><i class="fas fa-chart-bar"></i></span>
-          <span class="nav-text">
-            <span class="nav-title">การแสดงผล</span>
-            <span class="nav-desc">ตั้งค่าธีม อื่น และรูปแบบการแสดงผล</span>
-          </span>
-          <i class="fas fa-chevron-right nav-arrow"></i>
-        </li>
-
-        <li class="nav-item">
-          <span class="nav-icon"><i class="fas fa-building"></i></span>
-          <span class="nav-text">
-            <span class="nav-title">ข้อมูลบริษัท</span>
-            <span class="nav-desc">จัดการข้อมูลและการตั้งค่าบริษัท</span>
-          </span>
-          <i class="fas fa-chevron-right nav-arrow"></i>
-        </li>
-
-        <li class="nav-item">
-          <span class="nav-icon"><i class="fas fa-lock"></i></span>
-          <span class="nav-text">
-            <span class="nav-title">ความปลอดภัย</span>
-            <span class="nav-desc">รหัสผ่าน การยืนยันตัวตน และความปลอดภัย</span>
-          </span>
-          <i class="fas fa-chevron-right nav-arrow"></i>
-        </li>
-
-        <li class="nav-item">
-          <span class="nav-icon"><i class="fas fa-database"></i></span>
-          <span class="nav-text">
-            <span class="nav-title">สำรองข้อมูล</span>
-            <span class="nav-desc">จัดการและดาวน์โหลดข้อมูลสำรอง</span>
-          </span>
-          <i class="fas fa-chevron-right nav-arrow"></i>
-        </li>
-
-        <li class="nav-item">
-          <span class="nav-icon"><i class="fas fa-link"></i></span>
-          <span class="nav-text">
-            <span class="nav-title">เชื่อมต่อระบบ</span>
-            <span class="nav-desc">เชื่อมต่อกับระบบภายนอก</span>
-          </span>
-          <i class="fas fa-chevron-right nav-arrow"></i>
-        </li>
-
-        <li class="nav-item">
-          <span class="nav-icon"><i class="fas fa-gear"></i></span>
-          <span class="nav-text">
-            <span class="nav-title">ตั้งค่าอื่นๆ</span>
-            <span class="nav-desc">การตั้งค่าเพิ่มเติม</span>
-          </span>
-          <i class="fas fa-chevron-right nav-arrow"></i>
-        </li>
-
       </ul>
     </aside>
 
     <!-- ===== Content ===== -->
-    <div class="settings-content">
+    @if (activeSection() === 'account') {
+      <app-setting-account />
+    } @else if (activeSection() === 'products') {
+      <app-setting-products />
+    }
 
-      <!-- Card: ข้อมูลส่วนตัว -->
-      <div class="card content-card">
-        <div class="content-header">
-          <h2>ข้อมูลส่วนตัว</h2>
-          <p>จัดการข้อมูลโปรไฟล์ของคุณ</p>
-        </div>
-
-        <div class="profile-photo-wrap">
-          <div class="avatar-circle">
-            <i class="fas fa-user avatar-icon"></i>
-            <button class="camera-btn" type="button">
-              <i class="fas fa-camera"></i>
-            </button>
-          </div>
-          <p class="photo-hint">รองรับไฟล์ JPG, PNG</p>
-          <p class="photo-hint">ขนาดไม่เกิน 2MB</p>
-        </div>
-      </div>
-
-    </div>
   </div>
 </div>

@@ -1,0 +1,254 @@
+<div class="settings-content">
+  <!-- Card: User Management (CEO only) -->
+  @if ((profile$ | async)?.role === 'ceo') {
+    <div class="card content-card">
+      <div class="content-header">
+        <div class="header-row">
+          <div>
+            <h2>User Management</h2>
+            <p>Add / Edit Name / Reset Password</p>
+          </div>
+          <button class="k-btn k-btn-primary k-btn-sm" (click)="openCreateDialog()">
+            <i class="fas fa-plus"></i> Add User
+          </button>
+        </div>
+      </div>
+
+      @if (isLoadingUsers) {
+        <div class="user-loading">
+          <i class="fas fa-spinner fa-spin"></i> Loading...
+        </div>
+      } @else {
+        <div class="user-table-wrap">
+          <table class="user-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Username</th>
+                <th>Role</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (user of users; track (user.userId ?? $index)) {
+                <tr>
+                  <!-- Name (inline edit) -->
+                  <td class="name-cell">
+                    @if (editingUserId === user.userId) {
+                      <div class="inline-edit">
+                        <input
+                          class="inline-input"
+                          [(ngModel)]="editingName"
+                          (keydown.enter)="saveName(user)"
+                          (keydown.escape)="cancelEdit()"
+                          autofocus
+                        />
+                        <button
+                          class="icon-btn save-btn"
+                          [disabled]="editSaving"
+                          (click)="saveName(user)"
+                          pTooltip="Save"
+                          tooltipPosition="top"
+                        >
+                          <i class="fas fa-check"></i>
+                        </button>
+                        <button
+                          class="icon-btn cancel-btn"
+                          (click)="cancelEdit()"
+                          pTooltip="Cancel"
+                          tooltipPosition="top"
+                        >
+                          <i class="fas fa-times"></i>
+                        </button>
+                      </div>
+                    } @else {
+                      <div class="name-display">
+                        <span>{{ user.name }}</span>
+                        <button
+                          class="icon-btn edit-btn"
+                          (click)="startEdit(user)"
+                          pTooltip="Edit Name"
+                          tooltipPosition="top"
+                        >
+                          <i class="fas fa-pen"></i>
+                        </button>
+                      </div>
+                    }
+                  </td>
+
+                  <!-- Username -->
+                  <td>
+                    @if (user.loginType === 'google') {
+                      <span class="google-badge">
+                        <i class="fab fa-google"></i> Google
+                      </span>
+                    } @else {
+                      <span class="username-text">{{ user.username }}</span>
+                    }
+                  </td>
+
+                  <!-- Role -->
+                  <td>
+                    <span class="role-badge role-{{ user.role }}">
+                      {{ roleLabels[user.role] }}
+                    </span>
+                  </td>
+
+                  <!-- Actions -->
+                  <td class="action-cell">
+                    @if (user.loginType === 'username') {
+                      <button
+                        class="k-btn k-btn-outline k-btn-sm"
+                        (click)="openResetDialog(user)"
+                      >
+                        <i class="fas fa-key"></i> Reset Password
+                      </button>
+                    }
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      }
+    </div>
+  }
+
+</div>
+
+<!-- ===== Dialog: Reset Password ===== -->
+<p-dialog
+  header="Reset Password"
+  [(visible)]="showResetDialog"
+  [modal]="true"
+  [style]="{ width: '400px' }"
+  [draggable]="false"
+>
+  @if (resetTarget) {
+    <div class="dialog-body">
+      <p class="dialog-user-name">
+        <i class="fas fa-user"></i> {{ resetTarget.name }}
+        <span class="username-chip">{{ resetTarget.username }}</span>
+      </p>
+
+      @if (resetSuccess) {
+        <div class="dialog-success">
+          <i class="fas fa-check-circle"></i> Password reset successful
+        </div>
+      } @else {
+        <div class="form-group">
+          <label class="input-label">New Password</label>
+          <input
+            type="password"
+            [(ngModel)]="resetForm.newPassword"
+            placeholder="At least 8 characters + numbers"
+          />
+        </div>
+        <div class="form-group">
+          <label class="input-label">Confirm Password</label>
+          <input
+            type="password"
+            [(ngModel)]="resetForm.confirm"
+            placeholder="Re-enter password"
+            (keydown.enter)="submitReset()"
+          />
+        </div>
+
+        @if (resetError) {
+          <p class="dialog-error">{{ resetError }}</p>
+        }
+
+        <div class="dialog-actions">
+          <button class="k-btn k-btn-outline k-btn-sm" (click)="showResetDialog = false">
+            Cancel
+          </button>
+          <button
+            class="k-btn k-btn-primary k-btn-sm"
+            [disabled]="resetLoading"
+            (click)="submitReset()"
+          >
+            @if (resetLoading) { <i class="fas fa-spinner fa-spin"></i> }
+            Save
+          </button>
+        </div>
+      }
+    </div>
+  }
+</p-dialog>
+
+<!-- ===== Dialog: Create User ===== -->
+<p-dialog
+  header="Add New User"
+  [(visible)]="showCreateDialog"
+  [modal]="true"
+  [style]="{ width: '440px' }"
+  [draggable]="false"
+>
+  <div class="dialog-body">
+    <div class="form-group">
+      <label class="input-label">Full Name <span class="required">*</span></label>
+      <input
+        type="text"
+        [(ngModel)]="createForm.name"
+        placeholder="Name displayed in system"
+      />
+    </div>
+    <div class="form-group">
+      <label class="input-label">Username <span class="required">*</span></label>
+      <input
+        type="text"
+        [(ngModel)]="createForm.username"
+        placeholder="a-z, 0-9, _ only"
+        autocomplete="off"
+      />
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="input-label">Password <span class="required">*</span></label>
+        <input
+          type="password"
+          [(ngModel)]="createForm.password"
+          placeholder="At least 8 characters + numbers"
+          autocomplete="new-password"
+        />
+      </div>
+      <div class="form-group">
+        <label class="input-label">Confirm Password <span class="required">*</span></label>
+        <input
+          type="password"
+          [(ngModel)]="createForm.confirm"
+          placeholder="Re-enter password"
+        />
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="input-label">Role <span class="required">*</span></label>
+      <p-select
+        [(ngModel)]="createForm.role"
+        [options]="roleOptions"
+        optionLabel="label"
+        optionValue="value"
+        appendTo="body"
+        [style]="{'width':'100%'}"
+      />
+    </div>
+
+    @if (createError) {
+      <p class="dialog-error">{{ createError }}</p>
+    }
+
+    <div class="dialog-actions">
+      <button class="k-btn k-btn-outline k-btn-sm" (click)="showCreateDialog = false">
+        Cancel
+      </button>
+      <button
+        class="k-btn k-btn-primary k-btn-sm"
+        [disabled]="createLoading"
+        (click)="submitCreate()"
+      >
+        @if (createLoading) { <i class="fas fa-spinner fa-spin"></i> }
+        Create User
+      </button>
+    </div>
+  </div>
+</p-dialog>

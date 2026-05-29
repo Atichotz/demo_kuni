@@ -1,7 +1,7 @@
 <div class="max-w-container">
   <!-- Page Header (Hidden on Print) -->
 
-  <div class="estimate-layout" style="margin-top:10rem;">
+  <div class="estimate-layout" >
     <div class="nav-overlay" [class.visible]="mobileNavOpen" (click)="mobileNavOpen = false"></div>
     <button class="nav-mobile-toggle" (click)="mobileNavOpen = !mobileNavOpen">
       <i [ngClass]="mobileNavOpen ? 'fas fa-times' : 'fas fa-bars'"></i>
@@ -17,12 +17,12 @@
         </button>
       </div>
       <ul class="nav-list">
-        <li class="nav-item" [class.active]="activeSection === 'sec-1'" (click)="scrollTo('sec-1')">
+        <!-- <li class="nav-item" [class.active]="activeSection === 'sec-1'" (click)="scrollTo('sec-1')">
           Customer Info
         </li>
         <li class="nav-item" [class.active]="activeSection === 'sec-2'" (click)="scrollTo('sec-2')">
           Electric Bill
-        </li>
+        </li> -->
         <!-- nav-subitem example: <li class="nav-subitem" [class.active]="activeSection === 'sec-3'" (click)="scrollTo('sec-3')">Panels</li> -->
         <li class="nav-item" [class.active]="activeSection === 'sec-3'" (click)="scrollTo('sec-3')">
           <span class="nav-num">1</span>Panels
@@ -61,7 +61,7 @@
     </nav>
     <div class="container-content">
       <div class="flex !mb-2 !flex-row justify-between flex-wrap" >
-        <h1>Price Estimation Builder</h1>
+        <h1 class="k-header">Price Estimation Builder</h1>
         <p-button [routerLink]="['/detail','6']" [rounded]="true" variant="outlined" severity="danger">
           <i class="fa-solid fa-xmark"></i>
         </p-button>
@@ -145,7 +145,7 @@
                 <th>Cost Price</th>
                 <th>Price Markup</th>
                 <th>Profit</th>
-                <th>Quantity</th>
+                <th class="col-qty">Quantity</th>
                 <th>Total</th>
                 <th>Total kW</th>
                 <th class="no-print"></th>
@@ -168,7 +168,7 @@
                 <td class="cell-auto">—</td>
                 <td class="cell-auto">—</td>
                 <td class="cell-auto">—</td>
-                <td><input type="number" placeholder="Qty"></td>
+                <td class="col-qty"><input type="number" placeholder="Qty"></td>
                 <td class="cell-auto">—</td>
                 <td class="cell-auto">—</td>
                 <td class="no-print">
@@ -199,7 +199,7 @@
                 <td class="cell-auto">—</td>
                 <td class="cell-auto">—</td>
                 <td></td>
-                <td><input type="text" placeholder="Qty"></td>
+                <td class="col-qty"><input type="text" placeholder="Qty"></td>
                 <td class="cell-auto">—</td>
                 <td class="cell-dash">—</td>
                 <td class="no-print"></td>
@@ -234,7 +234,7 @@
                 <th>Cost Price</th>
                 <th>Price Markup</th>
                 <th>Profit</th>
-                <th>Quantity</th>
+                <th class="col-qty">Quantity</th>
                 <th>Total</th>
                 <th>Total kW</th>
                 <th class="no-print"></th>
@@ -261,7 +261,7 @@
                 <td class="cell-auto">—</td>
                 <td class="cell-auto">—</td>
                 <td class="cell-auto">—</td>
-                <td><input type="number" placeholder="Qty"></td>
+                <td class="col-qty"><input type="number" placeholder="Qty"></td>
                 <td class="cell-auto">—</td>
                 <td class="cell-auto">—</td>
                 <td class="no-print">
@@ -292,7 +292,7 @@
                 <td class="cell-auto">—</td>
                 <td class="cell-auto">—</td>
                 <td></td>
-                <td><input type="text" placeholder="Qty"></td>
+                <td class="col-qty"><input type="text" placeholder="Qty"></td>
                 <td class="cell-auto">—</td>
                 <td class="cell-dash">—</td>
                 <td class="no-print"></td>
@@ -327,7 +327,7 @@
                 <th>Cost Price</th>
                 <th>Price Markup</th>
                 <th>Profit</th>
-                <th>Quantity</th>
+                <th class="col-qty">Quantity</th>
                 <th>Total</th>
                 <th>Total kW</th>
                 <th class="no-print"></th>
@@ -350,7 +350,7 @@
                 <td class="cell-auto">—</td>
                 <td class="cell-auto">—</td>
                 <td class="cell-auto">—</td>
-                <td><input type="number" placeholder="Qty"></td>
+                <td class="col-qty"><input type="number" placeholder="Qty"></td>
                 <td class="cell-auto">—</td>
                 <td class="cell-auto">—</td>
                 <td class="no-print">
@@ -381,7 +381,7 @@
                 <td class="cell-auto">—</td>
                 <td class="cell-auto">—</td>
                 <td></td>
-                <td><input type="text" placeholder="Qty"></td>
+                <td class="col-qty"><input type="text" placeholder="Qty"></td>
                 <td class="cell-auto">—</td>
                 <td class="cell-dash">—</td>
                 <td class="no-print"></td>
@@ -416,7 +416,7 @@
                 <th>Cost / W</th>
                 <th>Price Markup</th>
                 <th>Profit</th>
-                <th>Units</th>
+                <th class="col-qty">Units</th>
                 <th>Total</th>
                 <th class="no-print"></th>
               </tr>
@@ -434,7 +434,7 @@
                 <td class="cell-auto">—</td>
                 <td><input type="number" placeholder="Markup"></td>
                 <td class="cell-auto">—</td>
-                <td><input type="number" placeholder="Units"></td>
+                <td class="col-qty"><input type="number" placeholder="Units"></td>
                 <td class="cell-auto">—</td>
                 <td class="no-print">
                   <button class="icon-btn" title="Remove">
@@ -481,7 +481,7 @@
                 <th>Cost / W</th>
                 <th>Price Markup</th>
                 <th>Profit</th>
-                <th>Units</th>
+                <th class="col-qty">Units</th>
                 <th>Total</th>
                 <th class="no-print"></th>
               </tr>
@@ -499,7 +499,7 @@
                 <td class="cell-auto">—<br><span class="desc-lbl">.= Total / W</span></td>
                 <td class="cell-auto">—</td>
                 <td class="cell-auto">—</td>
-                <td><input type="text" placeholder="Units"></td>
+                <td class="col-qty"><input type="text" placeholder="Units"></td>
                 <td class="cell-auto">—</td>
                 <td class="no-print">
                   <button class="icon-btn" title="Remove">
@@ -546,7 +546,7 @@
                 <th>Cost / W</th>
                 <th>Price Markup</th>
                 <th>Profit</th>
-                <th>Units</th>
+                <th class="col-qty">Units</th>
                 <th>Total</th>
                 <th class="no-print"></th>
               </tr>
@@ -564,7 +564,7 @@
                 <td class="cell-auto">—</td>
                 <td class="cell-auto">—</td>
                 <td class="cell-auto">—</td>
-                <td><input type="text" placeholder="Units"></td>
+                <td class="col-qty"><input type="text" placeholder="Units"></td>
                 <td class="cell-auto">—</td>
                 <td class="no-print">
                   <button class="icon-btn" title="Remove">
@@ -618,7 +618,7 @@
               <tr>
                 <th colspan="4">Type</th>
                 <th colspan="2">Unit Rate</th>
-                <th>Quantity</th>
+                <th class="col-qty">Quantity</th>
                 <th>Total</th>
                 <th class="no-print"></th>
               </tr>
@@ -627,14 +627,14 @@
               <tr>
                 <td colspan="4">PEA / MEA Registration (Personal)</td>
                 <td colspan="2" style="text-align: right; font-weight: 600; color: var(--k-dark-grey);">฿ 15,000.00</td>
-                <td><input type="number" value="1" placeholder="Qty"></td>
+                <td class="col-qty"><input type="number" value="1" placeholder="Qty"></td>
                 <td class="cell-auto">฿ 15,000.00</td>
                 <td class="no-print"></td>
               </tr>
               <tr>
                 <td colspan="4">PEA / MEA FIT</td>
                 <td colspan="2" class="cell-dash">฿ —</td>
-                <td><input type="number" value="1" placeholder="Qty"></td>
+                <td class="col-qty"><input type="number" value="1" placeholder="Qty"></td>
                 <td class="cell-auto">฿ —</td>
                 <td class="no-print"></td>
               </tr>

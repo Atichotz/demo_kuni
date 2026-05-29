@@ -22,7 +22,7 @@ export class AuthService {
   private readonly router = inject(Router);
   private readonly http = inject(HttpClient);
 
-  // ✅ แยก state ชัดเจนด้วย undefined = loading
+  // แยก state ชัดเจนด้วย undefined = loading
   readonly session$ = new BehaviorSubject<Session | null | undefined>(undefined);
   readonly currentProfile$ = new BehaviorSubject<UserProfile | null>(null);
 

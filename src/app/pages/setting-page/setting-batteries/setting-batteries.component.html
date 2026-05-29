@@ -1,0 +1,42 @@
+<div class="k-setting-table-wrap">
+  <table class="k-setting-table">
+    <thead>
+      <tr>
+        <th>Brand</th>
+        <th>kW</th>
+        <th>Description</th>
+        <th>Cost Price</th>
+        <th>Shipping</th>
+        <th>Sale Price</th>
+        <th>Notes</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (row of rows; track $index) {
+      <tr>
+        <td>
+          <p-select [options]="brands" [(ngModel)]="row.brand" [style]="{'width':'100%'}" appendTo="body" />
+        </td>
+        <td><input type="number" [(ngModel)]="row.kw" min="0" /></td>
+        <td><input type="text" [(ngModel)]="row.description" /></td>
+        <td><input type="number" [(ngModel)]="row.costPrice" min="0" /></td>
+        <td><input type="number" [(ngModel)]="row.shipping" min="0" /></td>
+        <td><input type="number" [(ngModel)]="row.salePrice" min="0" /></td>
+        <td><input type="text" [(ngModel)]="row.notes" /></td>
+        <td>
+          <button class="icon-btn remove-btn" type="button" (click)="removeRow($index)">
+            <i class="fas fa-trash-alt"></i>
+          </button>
+        </td>
+      </tr>
+      }
+    </tbody>
+  </table>
+</div>
+
+<div class="k-setting-footer">
+  <button class="k-btn k-btn-outline" type="button" (click)="addRow()">
+    <i class="fas fa-plus"></i> Add Row
+  </button>
+</div>

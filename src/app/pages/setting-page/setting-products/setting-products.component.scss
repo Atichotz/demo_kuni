@@ -1,0 +1,71 @@
+.settings-content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.content-card {
+  padding: 24px;
+}
+
+.content-header {
+  margin-bottom: 20px;
+  border-bottom: 1px solid var(--k-light-grey);
+  padding-bottom: 16px;
+
+  h2 {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--k-dark-grey);
+    margin-bottom: 4px;
+  }
+
+  p {
+    font-size: 13px;
+    color: var(--k-mid-grey);
+  }
+}
+
+// ===== Tab Bar =====
+.tab-bar {
+  display: flex;
+  gap: 4px;
+  border-bottom: 2px solid var(--k-light-grey);
+  margin-bottom: 20px;
+}
+
+.tab-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 16px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--k-mid-grey);
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px;
+  cursor: pointer;
+  transition: var(--k-transition);
+  border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+
+  i {
+    font-size: 13px;
+  }
+
+  &:hover {
+    color: var(--k-white);
+    background: var(--k-red);
+  }
+
+  &.active {
+    color: var(--k-red);
+    border-bottom-color: var(--k-red);
+    background: transparent;
+
+    i {
+      color: var(--k-red);
+    }
+  }
+}
